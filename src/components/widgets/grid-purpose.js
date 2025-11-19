@@ -57,19 +57,21 @@ export function render(container) {
 
   const content = document.createElement('div');
   content.innerHTML = `
+    <div style="text-align:center; margin-bottom: 20px;">
+      <img src="./grid-ecosystem.png" style="max-width:100%; border-radius:12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+      <p style="font-size:0.8rem; color:#666; margin-top:5px">The Grid Ecosystem: From Generation to Consumption</p>
+    </div>
+
     <div class="pool-container">
-      <div class="level-line"></div>
-      <div class="water" id="pool-water"></div>
-      
       <div class="pipe inlet">
         <div class="flow flow-in" id="flow-in"></div>
       </div>
       
-      <div style="text-align:center; margin: 20px 0;">
-        <img src="./grid-ecosystem.png" style="max-width:100%; border-radius:12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-        <p style="font-size:0.8rem; color:#666; margin-top:5px">The Grid Ecosystem: From Generation to Consumption</p>
+      <div class="pool">
+        <div class="water" id="water-level"></div>
+        <div class="pool-label">GRID FREQUENCY (50Hz)</div>
       </div>
-      
+
       <div class="pipe outlet">
         <div class="flow flow-out" id="flow-out"></div>
       </div>

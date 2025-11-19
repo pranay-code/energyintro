@@ -38,7 +38,7 @@ const WIDGETS = {
     'battery-arbitrage': BatteryArbitrage,
     'venn-diagram': VennDiagram,
     'state-explorer': StateExplorer,
-    'quiz-module': QuizModule,
+    'quiz-module-v2': QuizModule,
     'intro-widget': IntroWidget
 };
 
