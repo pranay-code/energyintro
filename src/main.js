@@ -1,3 +1,4 @@
+import '../style.css';
 import { topics } from './data.js';
 import { initSidebar } from './components/sidebar.js';
 
@@ -10,7 +11,6 @@ async function loadWidget(widgetType, container) {
         container.innerHTML = '';
 
         // Import the specific widget module
-        // Note: In a real bundler setup, we might need a map, but Vite handles dynamic imports well
         const module = await import(`./components/widgets/${widgetType}.js`);
         if (module && module.render) {
             module.render(container);
