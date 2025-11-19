@@ -1,6 +1,6 @@
 export function render(container) {
-    const style = document.createElement('style');
-    style.textContent = `
+  const style = document.createElement('style');
+  style.textContent = `
     .pool-container {
       position: relative;
       width: 300px;
@@ -53,16 +53,21 @@ export function render(container) {
       opacity: 0.5;
     }
   `;
-    container.appendChild(style);
+  container.appendChild(style);
 
-    const content = document.createElement('div');
-    content.innerHTML = `
+  const content = document.createElement('div');
+  content.innerHTML = `
     <div class="pool-container">
       <div class="level-line"></div>
       <div class="water" id="pool-water"></div>
       
       <div class="pipe inlet">
         <div class="flow flow-in" id="flow-in"></div>
+      </div>
+      
+      <div style="text-align:center; margin: 20px 0;">
+        <img src="/energyintro/grid-ecosystem.png" style="max-width:100%; border-radius:12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        <p style="font-size:0.8rem; color:#666; margin-top:5px">The Grid Ecosystem: From Generation to Consumption</p>
       </div>
       
       <div class="pipe outlet">
@@ -76,40 +81,40 @@ export function render(container) {
       <button class="btn" id="btn-load">Add Load</button>
     </div>
   `;
-    container.appendChild(content);
+  container.appendChild(content);
 
-    const water = content.querySelector('#pool-water');
-    const status = content.querySelector('#status-text');
-    let level = 50;
+  const water = content.querySelector('#pool-water');
+  const status = content.querySelector('#status-text');
+  let level = 50;
 
-    // Simulation loop
-    setInterval(() => {
-        // Natural drain (Load)
-        level -= 0.5;
+  // Simulation loop
+  setInterval(() => {
+    // Natural drain (Load)
+    level -= 0.5;
 
-        // Clamp
-        if (level < 0) level = 0;
-        if (level > 100) level = 100;
+    // Clamp
+    if (level < 0) level = 0;
+    if (level > 100) level = 100;
 
-        water.style.height = level + '%';
+    water.style.height = level + '%';
 
-        if (level < 40) {
-            status.textContent = "Under Frequency (Low)";
-            status.style.color = "var(--alert-red)";
-        } else if (level > 60) {
-            status.textContent = "Over Frequency (High)";
-            status.style.color = "var(--alert-red)";
-        } else {
-            status.textContent = "Stable (50Hz)";
-            status.style.color = "var(--success-green)";
-        }
-    }, 100);
+    if (level < 40) {
+      status.textContent = "Under Frequency (Low)";
+      status.style.color = "var(--alert-red)";
+    } else if (level > 60) {
+      status.textContent = "Over Frequency (High)";
+      status.style.color = "var(--alert-red)";
+    } else {
+      status.textContent = "Stable (50Hz)";
+      status.style.color = "var(--success-green)";
+    }
+  }, 100);
 
-    content.querySelector('#btn-gen').addEventListener('click', () => {
-        level += 10;
-    });
+  content.querySelector('#btn-gen').addEventListener('click', () => {
+    level += 10;
+  });
 
-    content.querySelector('#btn-load').addEventListener('click', () => {
-        level -= 10;
-    });
+  content.querySelector('#btn-load').addEventListener('click', () => {
+    level -= 10;
+  });
 }

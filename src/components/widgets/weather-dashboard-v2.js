@@ -1,7 +1,16 @@
 import L from 'leaflet';
 import Chart from 'chart.js/auto';
 
+// Fix Leaflet Icon issue in bundlers
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+});
+
 export function render(container) {
+  try {
     const style = document.createElement('style');
     style.textContent = `
     .dashboard-grid {
@@ -15,6 +24,7 @@ export function render(container) {
       border-radius: 12px;
       overflow: hidden;
       border: 1px solid #ccc;
+      z-index: 1; /* Ensure map is below other overlays if any */
     }
     .controls-box {
       display: flex;
@@ -79,121 +89,140 @@ export function render(container) {
 
     // Init Map
     setTimeout(() => {
+      try {
+        if (map) map.remove(); // Cleanup if re-rendering
         map = L.map('map').setView([currentLat, currentLon], 8);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap'
+          attribution: '© OpenStreetMap'
         }).addTo(map);
         marker = L.marker([currentLat, currentLon]).addTo(map);
 
         updateForecast(currentLat, currentLon);
-    }, 100);
+      } catch (err) {
+        console.error("Map Init Error:", err);
+        content.querySelector('#map').innerHTML = `<p style="color:red; padding:20px;">Map Error: ${err.message}</p>`;
+      }
+    }, 500); // Increased timeout to ensure DOM is ready
 
     // Handlers
     const updateLocation = (lat, lon, name) => {
-        currentLat = lat;
-        currentLon = lon;
+      currentLat = lat;
+      currentLon = lon;
+      if (map) {
         map.setView([lat, lon], 10);
-        marker.setLatLng([lat, lon]);
-        content.querySelector('#location-info').textContent = `Selected: ${name || 'Custom Coords'} (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
-        updateForecast(lat, lon);
+        if (marker) marker.setLatLng([lat, lon]);
+      }
+      content.querySelector('#location-info').textContent = `Selected: ${name || 'Custom Coords'} (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
+      updateForecast(lat, lon);
     };
 
     content.querySelector('#btn-auto').addEventListener('click', () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(pos => {
-                updateLocation(pos.coords.latitude, pos.coords.longitude, "Your Location");
-            }, () => alert("Location access denied."));
-        }
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          updateLocation(pos.coords.latitude, pos.coords.longitude, "Your Location");
+        }, () => alert("Location access denied."));
+      }
     });
 
     content.querySelector('#btn-search').addEventListener('click', async () => {
-        const query = content.querySelector('#search-input').value;
-        if (!query) return;
+      const query = content.querySelector('#search-input').value;
+      if (!query) return;
 
-        try {
-            const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=1&language=en&format=json`);
-            const data = await res.json();
-            if (data.results && data.results.length > 0) {
-                const loc = data.results[0];
-                updateLocation(loc.latitude, loc.longitude, loc.name);
-            } else {
-                alert("Location not found");
-            }
-        } catch (e) {
-            console.error(e);
+      try {
+        const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=1&language=en&format=json`);
+        const data = await res.json();
+        if (data.results && data.results.length > 0) {
+          const loc = data.results[0];
+          updateLocation(loc.latitude, loc.longitude, loc.name);
+        } else {
+          alert("Location not found");
         }
+      } catch (e) {
+        console.error(e);
+        alert("Search failed");
+      }
     });
 
     content.querySelector('#btn-coords').addEventListener('click', () => {
-        const lat = parseFloat(content.querySelector('#lat-input').value);
-        const lon = parseFloat(content.querySelector('#lon-input').value);
-        if (!isNaN(lat) && !isNaN(lon)) {
-            updateLocation(lat, lon, "Custom Coordinates");
-        }
+      const lat = parseFloat(content.querySelector('#lat-input').value);
+      const lon = parseFloat(content.querySelector('#lon-input').value);
+      if (!isNaN(lat) && !isNaN(lon)) {
+        updateLocation(lat, lon, "Custom Coordinates");
+      }
     });
 
     async function updateForecast(lat, lon) {
-        try {
-            // Fetch GHI and Wind Speed (120m)
-            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=shortwave_radiation,wind_speed_120m&forecast_days=1`;
-            const res = await fetch(url);
-            const data = await res.json();
+      try {
+        // Fetch GHI and Wind Speed (120m)
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=shortwave_radiation,wind_speed_120m&forecast_days=1`;
+        const res = await fetch(url);
+        const data = await res.json();
 
-            const labels = data.hourly.time.map(t => t.split('T')[1]);
-            const ghi = data.hourly.shortwave_radiation;
-            const wind = data.hourly.wind_speed_120m;
+        if (!data.hourly) throw new Error("No data");
 
-            if (chart) chart.destroy();
+        const labels = data.hourly.time.map(t => t.split('T')[1]);
+        const ghi = data.hourly.shortwave_radiation;
+        const wind = data.hourly.wind_speed_120m;
 
-            const ctx = content.querySelector('#forecast-chart').getContext('2d');
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'GHI (W/m²)',
-                            data: ghi,
-                            borderColor: '#FF6D00', // Solar Orange
-                            backgroundColor: 'rgba(255, 109, 0, 0.1)',
-                            yAxisID: 'y',
-                            fill: true
-                        },
-                        {
-                            label: 'Wind Speed 120m (km/h)',
-                            data: wind,
-                            borderColor: '#00B0FF', // Neon Cyan
-                            yAxisID: 'y1',
-                            tension: 0.4
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: { mode: 'index', intersect: false },
-                    plugins: {
-                        title: { display: true, text: '24-Hour Resource Forecast' }
-                    },
-                    scales: {
-                        y: {
-                            type: 'linear',
-                            display: true,
-                            position: 'left',
-                            title: { display: true, text: 'Solar Irradiance (W/m²)' }
-                        },
-                        y1: {
-                            type: 'linear',
-                            display: true,
-                            position: 'right',
-                            grid: { drawOnChartArea: false },
-                            title: { display: true, text: 'Wind Speed (km/h)' }
-                        }
-                    }
-                }
-            });
-        } catch (e) {
-            console.error("Forecast Error", e);
-        }
+        if (chart) chart.destroy();
+
+        const ctx = content.querySelector('#forecast-chart').getContext('2d');
+        chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'GHI (W/m²)',
+                data: ghi,
+                borderColor: '#FF6D00', // Solar Orange
+                backgroundColor: 'rgba(255, 109, 0, 0.1)',
+                yAxisID: 'y',
+                fill: true
+              },
+              {
+                label: 'Wind Speed 120m (km/h)',
+                data: wind,
+                borderColor: '#00B0FF', // Neon Cyan
+                yAxisID: 'y1',
+                tension: 0.4
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+              title: { display: true, text: '24-Hour Resource Forecast' }
+            },
+            scales: {
+              y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                title: { display: true, text: 'Solar Irradiance (W/m²)' }
+              },
+              y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                grid: { drawOnChartArea: false },
+                title: { display: true, text: 'Wind Speed (km/h)' }
+              }
+            }
+          }
+        });
+      } catch (e) {
+        console.error("Forecast Error", e);
+      }
     }
+  } catch (err) {
+    console.error("Widget Render Error:", err);
+    container.innerHTML = `<div style="color:red; padding:20px; border:1px solid red;">
+      <h3>Widget Error</h3>
+      <p>${err.message}</p>
+      <pre>${err.stack}</pre>
+    </div>`;
+  }
 }
