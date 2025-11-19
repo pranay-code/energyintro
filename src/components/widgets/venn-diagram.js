@@ -54,17 +54,47 @@ export function render(container) {
   const canvas = content.querySelector('#vennCanvas');
   if (!canvas) return; // Guard clause
   const ctx = canvas.getContext('2d');
-  // The following lines refer to elements that were removed from content.innerHTML
-  // They are kept here as per the provided edit, but will not find any elements.
-  const tooltip = content.querySelector('#venn-tooltip');
-  const clean = content.querySelector('.circle-clean');
-  const renewable = content.querySelector('.circle-renewable');
+  // Draw Circles
+  // Renewable (Left)
+  ctx.beginPath();
+  ctx.arc(120, 125, 90, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(0, 200, 83, 0.5)'; // Darker Green, more opaque
+  ctx.fill();
+  ctx.strokeStyle = '#00C853';
+  ctx.lineWidth = 2;
+  ctx.stroke();
 
-  // These event listeners will not attach if 'clean' or 'renewable' are null
-  if (clean) clean.addEventListener('mouseenter', () => tooltip.textContent = clean.dataset.info);
-  if (renewable) renewable.addEventListener('mouseenter', () => tooltip.textContent = renewable.dataset.info);
+  // Clean (Right)
+  ctx.beginPath();
+  ctx.arc(230, 125, 90, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(0, 176, 255, 0.5)'; // Darker Blue, more opaque
+  ctx.fill();
+  ctx.strokeStyle = '#00B0FF';
+  ctx.lineWidth = 2;
+  ctx.stroke();
 
-  // Intersection logic is visual (mix-blend-mode), but for tooltip we can simulate
-  // It's hard to detect hover on intersection specifically with just divs without complex clip-path.
-  // For simplicity, we'll just explain the intersection in the text.
+  // Labels
+  ctx.fillStyle = '#1B5E20'; // Dark Green Text
+  ctx.font = 'bold 14px Roboto, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('RENEWABLE', 90, 125);
+
+  ctx.fillStyle = '#01579B'; // Dark Blue Text
+  ctx.fillText('CLEAN', 260, 125);
+
+  ctx.fillStyle = '#004D40'; // Dark Teal Text
+  ctx.font = 'bold 12px Roboto, sans-serif';
+  ctx.fillText('BOTH', 175, 125);
+  ctx.font = '10px Roboto, sans-serif';
+  ctx.fillText('(Solar/Wind)', 175, 140);
+
+  // Legend
+  const legend = content.querySelector('#venn-legend');
+  if (legend) {
+    legend.innerHTML = `
+      <div class="legend-item"><div class="legend-color-box" style="background:#00C853"></div><strong>Renewable:</strong> Naturally replenished (Sun, Wind).</div>
+      <div class="legend-item"><div class="legend-color-box" style="background:#00B0FF"></div><strong>Clean:</strong> Low Carbon (Nuclear, Hydro).</div>
+      <div class="legend-item"><div class="legend-color-box" style="background:#004D40"></div><strong>Both:</strong> The sweet spot (RECs).</div>
+    `;
+  }
 }
