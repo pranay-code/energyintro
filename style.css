@@ -341,5 +341,14 @@ p {
   .widget-container {
     padding: 15px;
     min-height: 250px;
+    display: block;
+    /* Switch to block to handle overflow better */
+    overflow-x: auto;
+    /* Allow horizontal scrolling */
+    text-align: center;
+    /* Center content if it fits */
+    white-space: nowrap;
+    /* Prevent wrapping if needed, though might break text */
+    /* Actually, white-space: nowrap might be bad for text descriptions inside widgets. Let's omit it. */
   }
 }
