@@ -1,4 +1,4 @@
-import{q as m}from"./index-BDdPelv7.js";import{E as b}from"./jspdf.es.min-BUQxU--x.js";function h(a){const c=document.createElement("style");c.textContent=`
+import{q as m}from"./index-B_re-WvR.js";import{E as b}from"./jspdf.es.min-D6AoIUCL.js";function h(a){const c=document.createElement("style");c.textContent=`
     .quiz-container {
       max-width: 600px;
       margin: 0 auto;

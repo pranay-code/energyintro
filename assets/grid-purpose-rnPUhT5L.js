@@ -59,6 +59,11 @@ function r(i){const n=document.createElement("style");n.textContent=`
         <div class="flow flow-in" id="flow-in"></div>
       </div>
       
+      <div style="text-align:center; margin: 20px 0;">
+        <img src="/energyintro/grid-ecosystem.png" style="max-width:100%; border-radius:12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        <p style="font-size:0.8rem; color:#666; margin-top:5px">The Grid Ecosystem: From Generation to Consumption</p>
+      </div>
+      
       <div class="pipe outlet">
         <div class="flow flow-out" id="flow-out"></div>
       </div>
