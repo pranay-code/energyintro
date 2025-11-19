@@ -81,7 +81,7 @@ export function render(container) {
       letter-spacing: 1px;
     }
   `;
-  container.appendChild(style);
+  // container.appendChild(style); // Moved to bottom
 
   container.innerHTML = `
     <div class="market-container">
@@ -105,6 +105,7 @@ export function render(container) {
       Generators sell power to the grid, but sell the "Green Attribute" (REC) to factories who need to offset emissions.
     </div>
   `;
+  container.appendChild(style);
 
   function animate() {
     const zone = container.querySelector('#exchange-zone');
