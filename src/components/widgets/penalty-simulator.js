@@ -1,0 +1,95 @@
+export function render(container) {
+    const style = document.createElement('style');
+    style.textContent = `
+    .game-container {
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+    }
+    .input-group {
+      margin: 20px 0;
+    }
+    input {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+      padding: 10px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      width: 100px;
+      text-align: center;
+    }
+    .result-box {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .penalty-text {
+      color: var(--alert-red);
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .safe-text {
+      color: var(--success-green);
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+  `;
+    container.appendChild(style);
+
+    const content = document.createElement('div');
+    content.innerHTML = `
+    <div class="game-container">
+      <div class="input-group">
+        <label>Schedule (MW): </label>
+        <input type="number" id="schedule-input" value="10">
+      </div>
+      <button class="btn" id="sim-btn">Simulate 15-min Block</button>
+      
+      <div class="result-box" id="result-area">
+        <p style="color: #888;">Click Simulate to see if weather matches your schedule.</p>
+      </div>
+    </div>
+  `;
+    container.appendChild(content);
+
+    const btn = content.querySelector('#sim-btn');
+    const input = content.querySelector('#schedule-input');
+    const result = content.querySelector('#result-area');
+
+    btn.addEventListener('click', () => {
+        const schedule = parseFloat(input.value);
+        if (!schedule || schedule <= 0) return;
+
+        // Simulate Actual with random variance (-30% to +30%)
+        const variance = (Math.random() * 0.6) - 0.3;
+        const actual = schedule * (1 + variance);
+
+        const deviation = ((actual - schedule) / schedule) * 100;
+        const absDev = Math.abs(deviation);
+
+        let html = `
+      <div>Actual Generation: <strong>${actual.toFixed(2)} MW</strong></div>
+      <div>Deviation: <strong>${deviation.toFixed(2)}%</strong></div>
+    `;
+
+        if (absDev > 15) {
+            // Penalty!
+            const penalty = Math.round(absDev * 1000); // Dummy calc
+            html += `<div class="penalty-text">PENALTY: ₹${penalty}</div>`;
+            html += `<div style="font-size:0.8rem; color:#aaa">Deviation > 15% limit</div>`;
+        } else {
+            html += `<div class="safe-text">NO PENALTY</div>`;
+            html += `<div style="font-size:0.8rem; color:#aaa">Within 15% band</div>`;
+        }
+
+        result.innerHTML = html;
+    });
+}
