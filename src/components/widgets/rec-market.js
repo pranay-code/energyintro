@@ -1,8 +1,9 @@
 export function render(container) {
-    const style = document.createElement('style');
-    style.textContent = `
+  const style = document.createElement('style');
+  style.textContent = `
     .market-container {
       display: flex;
+      flex-direction: row; /* Explicitly set row */
       justify-content: space-between;
       align-items: center;
       padding: 20px;
@@ -11,14 +12,17 @@ export function render(container) {
       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
       position: relative;
       overflow: hidden;
-      height: 200px;
+      height: 220px; /* Increased height */
+      width: 100%; /* Ensure full width */
+      box-sizing: border-box; /* Include padding in width */
     }
     .entity {
       display: flex;
       flex-direction: column;
       align-items: center;
       z-index: 2;
-      width: 100px;
+      width: 120px; /* Fixed width for entities */
+      flex-shrink: 0; /* Prevent shrinking */
     }
     .entity-icon {
       font-size: 3rem;
@@ -29,6 +33,7 @@ export function render(container) {
       color: #333;
       text-align: center;
       font-size: 0.9rem;
+      line-height: 1.2;
     }
     .exchange-zone {
       flex-grow: 1;
@@ -37,18 +42,22 @@ export function render(container) {
       display: flex;
       align-items: center;
       justify-content: center;
+      margin: 0 10px; /* Add spacing */
     }
     .token {
       position: absolute;
-      padding: 5px 10px;
-      border-radius: 4px;
+      padding: 6px 12px;
+      border-radius: 20px; /* Pill shape */
       font-size: 0.8rem;
       font-weight: bold;
       display: flex;
       align-items: center;
       gap: 5px;
-      transition: all 2s linear;
+      transition: left 2.5s linear, right 2.5s linear, opacity 0.3s ease; /* Smoother transition */
       opacity: 0;
+      white-space: nowrap;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 1;
     }
     .rec-token {
       background: #E8F5E9;
@@ -72,9 +81,9 @@ export function render(container) {
       letter-spacing: 1px;
     }
   `;
-    container.appendChild(style);
+  container.appendChild(style);
 
-    container.innerHTML = `
+  container.innerHTML = `
     <div class="market-container">
       <div class="market-label">POWER EXCHANGE</div>
       
@@ -97,44 +106,44 @@ export function render(container) {
     </div>
   `;
 
-    function animate() {
-        const zone = container.querySelector('#exchange-zone');
-        if (!zone) return;
+  function animate() {
+    const zone = container.querySelector('#exchange-zone');
+    if (!zone) return;
 
-        // REC moves Left -> Right
-        const rec = document.createElement('div');
-        rec.className = 'token rec-token';
-        rec.innerHTML = '📄 1 REC';
-        rec.style.left = '10%';
-        rec.style.opacity = '1';
-        zone.appendChild(rec);
+    // REC moves Left -> Right
+    const rec = document.createElement('div');
+    rec.className = 'token rec-token';
+    rec.innerHTML = '📄 1 REC';
+    rec.style.left = '10%';
+    rec.style.opacity = '1';
+    zone.appendChild(rec);
 
-        // Money moves Right -> Left
-        const money = document.createElement('div');
-        money.className = 'token money-token';
-        money.innerHTML = '💰 ₹1000';
-        money.style.right = '10%';
-        money.style.opacity = '1';
-        zone.appendChild(money);
+    // Money moves Right -> Left
+    const money = document.createElement('div');
+    money.className = 'token money-token';
+    money.innerHTML = '💰 ₹1000';
+    money.style.right = '10%';
+    money.style.opacity = '1';
+    zone.appendChild(money);
 
-        // Trigger animation
-        requestAnimationFrame(() => {
-            rec.style.left = '70%';
-            money.style.right = '70%';
-        });
+    // Trigger animation
+    requestAnimationFrame(() => {
+      rec.style.left = '70%';
+      money.style.right = '70%';
+    });
 
-        // Cleanup
-        setTimeout(() => {
-            rec.style.opacity = '0';
-            money.style.opacity = '0';
-            setTimeout(() => {
-                rec.remove();
-                money.remove();
-            }, 500);
-        }, 2000);
-    }
+    // Cleanup
+    setTimeout(() => {
+      rec.style.opacity = '0';
+      money.style.opacity = '0';
+      setTimeout(() => {
+        rec.remove();
+        money.remove();
+      }, 500);
+    }, 2000);
+  }
 
-    // Start loop
-    animate();
-    setInterval(animate, 3000);
+  // Start loop
+  animate();
+  setInterval(animate, 3000);
 }

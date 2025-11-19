@@ -102,6 +102,11 @@ export const topics = [
         <p style="font-size:0.8rem; color:#666; margin-top:5px">The Grid Ecosystem: From Generation to Consumption</p>
       </div>
 
+      <div style="text-align:center; margin: 20px 0;">
+        <img src="./grid-ecosystem.png" style="max-width:100%; border-radius:12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        <p style="font-size:0.8rem; color:#666; margin-top:5px">The Grid Ecosystem: From Generation to Consumption</p>
+      </div>
+
       <h3>Why We Care</h3>
       <p>We don't just sell to a customer; we inject into this shared pool. If the pool is full (congestion) or the pipes are too small (transmission constraints), we can't sell our power, even if we can generate it.</p>
       <p><em>Next: What is pouring into this pool right now?</em></p>
