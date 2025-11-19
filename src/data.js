@@ -267,16 +267,38 @@ export const topics = [
       
       <h3>Why We Care</h3>
       <p>Only "Renewable" projects generate RECs (Renewable Energy Certificates). Understanding the classification helps in regulatory compliance and trading.</p>
-      <p><em>Next: Where is all this happening?</em></p>
+      <p><em>Next: How do we monetize these certificates?</em></p>
     `,
     widgetType: 'venn-diagram'
+  },
+  {
+    id: 'carbon-markets',
+    title: 'Carbon Markets & RECs',
+    content: `
+      <h2>Selling the "Green" Attribute</h2>
+      <p>When we generate renewable power, we produce two things:</p>
+      <ol>
+        <li><strong>Electricity:</strong> Sold to the grid (e.g., ₹2.50/unit).</li>
+        <li><strong>Green Attribute (REC):</strong> A digital certificate proving the power was green.</li>
+      </ol>
+      <p>Companies that pollute (like Steel or Cement factories) buy these RECs to offset their emissions and meet regulatory targets (RPO - Renewable Purchase Obligation).</p>
+      
+      <div class="example-box">
+        <strong>Real World Example:</strong> It's like buying organic vegetables. You pay for the vegetable (Electricity) plus a premium for the "Organic" label (REC).
+      </div>
+
+      <h3>Why We Care</h3>
+      <p>RECs are an additional revenue stream. In some cases, we can sell the power cheaply but make our profit from trading RECs in the carbon market.</p>
+      <p><em>Next: Where are these projects located?</em></p>
+    `,
+    widgetType: 'rec-market'
   },
   {
     id: 'statistics',
     title: 'Indian Energy Statistics',
     content: `
       <h2>The National Picture</h2>
-      <p>India is a diverse continent. Resources are not evenly distributed.</p>
+      <p>India is a diverse continent. Resources are not evenly distributed. This is why we need a national market to trade power and RECs.</p>
       <ul>
         <li><strong>Rajasthan/Gujarat:</strong> High Solar & Wind (The "Saudi Arabia" of Renewables).</li>
         <li><strong>Tamil Nadu:</strong> High Wind.</li>

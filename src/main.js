@@ -18,6 +18,7 @@ import * as WeatherDashboard from './components/widgets/weather-dashboard-v2.js'
 import * as PenaltySimulator from './components/widgets/penalty-simulator.js';
 import * as BatteryArbitrage from './components/widgets/battery-arbitrage.js';
 import * as VennDiagram from './components/widgets/venn-diagram.js';
+import * as RecMarket from './components/widgets/rec-market.js';
 import * as StateExplorer from './components/widgets/state-explorer.js';
 import * as QuizModule from './components/widgets/quiz-module-v2.js';
 import * as IntroWidget from './components/widgets/intro-widget.js';
@@ -37,6 +38,7 @@ const WIDGETS = {
     'penalty-simulator': PenaltySimulator,
     'battery-arbitrage': BatteryArbitrage,
     'venn-diagram': VennDiagram,
+    'rec-market': RecMarket,
     'state-explorer': StateExplorer,
     'quiz-module-v2': QuizModule,
     'intro-widget': IntroWidget
