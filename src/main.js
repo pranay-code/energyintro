@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSidebar(topics, renderTopic);
 
     // Initial Render
-    renderSidebar();
+    // renderSidebar(); // Removed undefined call
     renderTopic(topics[0].id);
 
     // Mobile Menu Toggle
