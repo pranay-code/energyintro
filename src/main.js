@@ -91,6 +91,34 @@ function renderTopic(topicId) {
 document.addEventListener('DOMContentLoaded', () => {
     initSidebar(topics, renderTopic);
 
-    // Load first topic by default
+    // Initial Render
+    renderSidebar();
     renderTopic(topics[0].id);
+
+    // Mobile Menu Toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Close sidebar when clicking a nav item on mobile
+        sidebar.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 && e.target.closest('.nav-item')) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Close sidebar when clicking outside (on main content)
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 &&
+                sidebar.classList.contains('open') &&
+                !sidebar.contains(e.target) &&
+                e.target !== menuToggle) {
+                sidebar.classList.remove('open');
+            }
+        });
+    }
 });

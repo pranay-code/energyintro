@@ -270,3 +270,71 @@ p {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.3);
 }
+
+/* Mobile Responsiveness */
+#menu-toggle {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 100;
+  background: var(--neon-cyan);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 768px) {
+  #app {
+    display: block;
+    /* Stack layout */
+    height: auto;
+    overflow-x: hidden;
+  }
+
+  #menu-toggle {
+    display: block;
+  }
+
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    /* Hide off-screen */
+    height: 100vh;
+    width: 280px;
+    transition: left 0.3s ease;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+  }
+
+  #sidebar.open {
+    left: 0;
+    /* Slide in */
+  }
+
+  #main-content {
+    padding: 80px 20px 20px 20px;
+    /* Top padding for menu button */
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .content-card {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .widget-container {
+    padding: 15px;
+    min-height: 250px;
+  }
+}
