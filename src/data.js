@@ -218,7 +218,7 @@ export const topics = [
         <strong>Try It Yourself:</strong> Use the widget below to see how the resource varies. Change the "Forecast Days" to 3 or 7 days to see the daily cycle of the sun and the unpredictability of the wind.
       </div>
       
-      <p>See how the resource is changing? That's why renewable integration is challenging and accurate forecasting is vital.</p>
+      <p><strong>See how the resource is changing? That's why renewable integration is challenging and accurate forecasting is vital.</strong></p>
       <p><em>But what if the forecast goes wrong? What is the financial impact? Let's find out.</em></p>
     `,
     widgetType: 'weather-dashboard-v2'
