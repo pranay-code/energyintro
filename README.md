@@ -1,6 +1,6 @@
-# GridGuard: The Energy Domain Onboarding Portal
+# The Energy Odyssey: Energy Domain Onboarding Portal
 
-**GridGuard** is an interactive web application designed to educate new hires and enthusiasts about the complex world of the Energy Grid. It takes users on a journey from the fundamental physics of energy to the economics of modern power markets.
+**The Energy Odyssey** is an interactive web application designed to help new hires and enthusiasts get comfortable with the complex world of the Energy Grid. It takes users on a journey from the fundamental physics of energy to the economics of modern power markets.
 
 🔗 **Live Demo:** [https://pranay-code.github.io/energyintro/](https://pranay-code.github.io/energyintro/)
 
@@ -8,6 +8,9 @@
 
 -   **Interactive Learning:** 17 structured topics covering Physics, Engineering, Economics, and Data Science.
 -   **Visual Simulations:**
+    -   **City Lights Intro:** An engaging animation showing how electricity powers modern life.
+    -   **Multi-Source Converter:** Simulate energy conversion from Coal, Wind, Solar, Hydro, and Biomass.
+    -   **Live Grid Mix:** Interactive "Waffle Chart" showing India's latest energy mix (June 2025 Estimates).
     -   **Grid Balancing:** Interactive "Pool" analogy for frequency control.
     -   **Weather Dashboard:** Live forecasting using OpenMeteo API & Leaflet Maps.
     -   **Turbine Logic:** Animated visualizations of generation mechanics.
