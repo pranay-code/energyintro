@@ -208,17 +208,18 @@ export const topics = [
     id: 'forecasting',
     title: 'Generation Forecasting',
     content: `
-      <h2>Predicting the Fuel</h2>
-      <p>Unlike coal, we can't control the Sun or Wind. The "Fuel" falls from the sky. We must forecast it using satellites and weather models.</p>
-      <p><strong>Resource Variability:</strong> Look at the charts below. Notice how the resource fluctuates? A coal plant line is flat. A solar/wind line is jagged. This variability makes load matching extremely difficult.</p>
+      <h2>The Varying Resource Problem</h2>
+      <p>Unlike a coal plant where we control the fuel, <strong>Renewable Energy</strong> depends on nature. We cannot command the wind to blow or the sun to shine.</p>
+      
+      <h3>Why Forecasting is Critical</h3>
+      <p>If we promise to deliver 100MW to the grid but the wind dies down, we destabilize the entire system. This is why we need accurate, hyper-local weather forecasts.</p>
       
       <div class="example-box">
-        <strong>Real World Example:</strong> A cloud passing over a solar farm can drop generation from 100MW to 20MW in seconds. We must predict this to warn the grid.
+        <strong>Try It Yourself:</strong> Use the widget below to see how the resource varies. Change the "Forecast Days" to 3 or 7 days to see the daily cycle of the sun and the unpredictability of the wind.
       </div>
-
-      <h3>Why We Care</h3>
-      <p>Accurate forecasts allow us to commit power to the grid. If we say we will generate 100MW and only generate 50MW, we have destabilized the grid.</p>
-      <p><em>Next: The financial cost of being wrong.</em></p>
+      
+      <p>See how the resource is changing? That's why renewable integration is challenging and accurate forecasting is vital.</p>
+      <p><em>But what if the forecast goes wrong? What is the financial impact? Let's find out.</em></p>
     `,
     widgetType: 'weather-dashboard-v2'
   },

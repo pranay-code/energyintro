@@ -14,49 +14,64 @@ export function render(container) {
     const style = document.createElement('style');
     style.textContent = `
     .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 20px;
       width: 100%;
     }
     
-    @media (max-width: 768px) {
-      .dashboard-grid {
-        grid-template-columns: 1fr; /* Stack on mobile */
-      }
-      .map-box {
-        height: 250px; /* Adjust height for mobile */
-      }
-    }
-
-    .map-box {
-      height: 300px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #ccc;
-      z-index: 1; /* Ensure map is below other overlays if any */
-    }
     .controls-box {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+      background: rgba(255,255,255,0.8);
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.05);
     }
+
     .input-row {
       display: flex;
       gap: 10px;
-    }
-    input {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      align-items: center;
       flex-grow: 1;
     }
-    .chart-container {
-      grid-column: 1 / -1;
-      height: 300px;
-      background: rgba(255,255,255,0.5);
+
+    .map-box {
+      width: 100%;
+      height: 400px; /* Increased height */
       border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #ccc;
+      z-index: 1;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .chart-container {
+      width: 100%;
+      height: 400px; /* Increased height */
+      background: rgba(255,255,255,0.8);
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    
+    input, select {
       padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      flex-grow: 1;
+    }
+
+    @media (max-width: 768px) {
+      .controls-box {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .map-box, .chart-container {
+        height: 300px;
+      }
     }
   `;
     container.appendChild(style);
@@ -65,7 +80,7 @@ export function render(container) {
     content.innerHTML = `
     <div class="dashboard-grid">
       <div class="controls-box">
-        <h3>Location Selection</h3>
+        <h3>Location & Duration</h3>
         <div class="input-row">
           <button class="btn" id="btn-auto">📍 Auto Detect</button>
         </div>
@@ -74,9 +89,14 @@ export function render(container) {
           <button class="btn" id="btn-search">Search</button>
         </div>
         <div class="input-row">
-          <input type="text" id="lat-input" placeholder="Lat">
-          <input type="text" id="lon-input" placeholder="Lon">
-          <button class="btn" id="btn-coords">Go</button>
+          <label for="days-select" style="font-size: 0.9rem; color: #555;">Forecast Days:</label>
+          <select id="days-select">
+            <option value="1">1 Day</option>
+            <option value="2">2 Days</option>
+            <option value="3">3 Days</option>
+            <option value="5">5 Days</option>
+            <option value="7">7 Days</option>
+          </select>
         </div>
         <div id="location-info" style="margin-top:10px; font-size:0.9rem; color:#666;">
           Default: Kutch, Gujarat
@@ -95,6 +115,7 @@ export function render(container) {
     // Default: Kutch
     let currentLat = 23.24;
     let currentLon = 69.66;
+    let currentDays = 1;
     let map, marker, chart;
 
     // Init Map
@@ -107,7 +128,7 @@ export function render(container) {
         }).addTo(map);
         marker = L.marker([currentLat, currentLon]).addTo(map);
 
-        updateForecast(currentLat, currentLon);
+        updateForecast(currentLat, currentLon, currentDays);
       } catch (err) {
         console.error("Map Init Error:", err);
         content.querySelector('#map').innerHTML = `<p style="color:red; padding:20px;">Map Error: ${err.message}</p>`;
@@ -123,7 +144,7 @@ export function render(container) {
         if (marker) marker.setLatLng([lat, lon]);
       }
       content.querySelector('#location-info').textContent = `Selected: ${name || 'Custom Coords'} (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
-      updateForecast(lat, lon);
+      updateForecast(lat, lon, currentDays);
     };
 
     content.querySelector('#btn-auto').addEventListener('click', () => {
@@ -153,24 +174,29 @@ export function render(container) {
       }
     });
 
-    content.querySelector('#btn-coords').addEventListener('click', () => {
-      const lat = parseFloat(content.querySelector('#lat-input').value);
-      const lon = parseFloat(content.querySelector('#lon-input').value);
-      if (!isNaN(lat) && !isNaN(lon)) {
-        updateLocation(lat, lon, "Custom Coordinates");
-      }
+    content.querySelector('#days-select').addEventListener('change', (e) => {
+      currentDays = parseInt(e.target.value);
+      updateForecast(currentLat, currentLon, currentDays);
     });
 
-    async function updateForecast(lat, lon) {
+    async function updateForecast(lat, lon, days) {
       try {
         // Fetch GHI and Wind Speed (120m)
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=shortwave_radiation,wind_speed_120m&forecast_days=1`;
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=shortwave_radiation,wind_speed_120m&forecast_days=${days}`;
         const res = await fetch(url);
         const data = await res.json();
 
         if (!data.hourly) throw new Error("No data");
 
-        const labels = data.hourly.time.map(t => t.split('T')[1]);
+        // Format labels based on duration
+        const labels = data.hourly.time.map(t => {
+          const date = new Date(t);
+          if (days > 2) {
+            return `${date.getDate()}/${date.getMonth() + 1} ${date.getHours()}:00`;
+          }
+          return t.split('T')[1];
+        });
+
         const ghi = data.hourly.shortwave_radiation;
         const wind = data.hourly.wind_speed_120m;
 
@@ -188,14 +214,16 @@ export function render(container) {
                 borderColor: '#FF6D00', // Solar Orange
                 backgroundColor: 'rgba(255, 109, 0, 0.1)',
                 yAxisID: 'y',
-                fill: true
+                fill: true,
+                pointRadius: days > 2 ? 0 : 3 // Hide points for longer durations for cleaner look
               },
               {
                 label: 'Wind Speed 120m (km/h)',
                 data: wind,
                 borderColor: '#00B0FF', // Neon Cyan
                 yAxisID: 'y1',
-                tension: 0.4
+                tension: 0.4,
+                pointRadius: days > 2 ? 0 : 3
               }
             ]
           },
@@ -204,9 +232,14 @@ export function render(container) {
             maintainAspectRatio: false,
             interaction: { mode: 'index', intersect: false },
             plugins: {
-              title: { display: true, text: '24-Hour Resource Forecast' }
+              title: { display: true, text: `${days * 24}-Hour Resource Forecast` }
             },
             scales: {
+              x: {
+                ticks: {
+                  maxTicksLimit: days > 2 ? 10 : 24 // Limit x-axis labels for longer durations
+                }
+              },
               y: {
                 type: 'linear',
                 display: true,

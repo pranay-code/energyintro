@@ -75,7 +75,7 @@ function renderTopic(topicId) {
     // Extract "Next: ..." text
     let content = topic.content;
     let nextText = '';
-    const nextMatch = content.match(/<p><em>Next:.*?<\/em><\/p>/);
+    const nextMatch = content.match(/<p><em>(Next:|But what if).*?<\/em><\/p>/);
 
     if (nextMatch) {
         nextText = nextMatch[0];
