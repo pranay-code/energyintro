@@ -4,11 +4,12 @@ export const topics = [
     title: 'Introduction',
     content: `
       <h2>Powering Modern Life</h2>
-      <p>Electricity is the invisible lifeblood of our civilization. From the moment we wake up to the streetlights that guide us home, it powers everything. But have you ever wondered how this energy reaches you?</p>
-      <p>In this portal, we will take you on a journey from the fundamental physics of energy to the complex economics of the modern power grid. You will learn how we harvest nature's power, convert it, and deliver it instantly to millions of homes.</p>
-      <h3>Why It Matters</h3>
-      <p>As an IPP (Independent Power Producer), we are the heart of this system. We generate the power that drives the economy. Understanding this domain is not just about engineering; it's about understanding the pulse of the nation.</p>
-      <p><em>Next: Let's start with the basics. What exactly is Energy?</em></p>
+      <p>Electricity is the invisible lifeblood of our civilization. From the moment we wake up to the streetlights that guide us home, it powers everything. But have you ever wondered how this energy actually reaches you?</p>
+      
+      <h3>Making Sense of the Chaos</h3>
+      <p>The energy world is full of complex terms like "Grid Frequency", "Renewables", and "Forecasting". It can feel overwhelming.</p>
+      <p><strong>Don't worry.</strong> This portal is designed to clear that confusion. We will break down these complex concepts into simple, interactive visualisations. By the end of this journey, you will feel completely at home in the world of energy.</p>
+      <p><em>Flip the switch below to see how energy brings a city to life.</em></p>
     `,
     widgetType: 'intro-widget'
   },
@@ -17,34 +18,29 @@ export const topics = [
     title: 'Energy: The Basics',
     content: `
       <h2>The Capacity to Perform Work</h2>
-      <p>Energy is the fundamental quantitative property that must be transferred to a body or physical system to perform work on the body, or to heat it. It is a conserved quantity; the law of conservation of energy states that energy can be converted in form, but not created or destroyed.</p>
-      <p>In our context, we distinguish between <strong>Primary Energy</strong> (raw resources like Coal, Sunlight, Wind) and <strong>Secondary Energy</strong> (Electricity), which is an energy carrier.</p>
+      <p>Energy is the ability to do work. In our industry, we focus on converting <strong>Primary Energy</strong> (raw resources) into <strong>Secondary Energy</strong> (Electricity).</p>
+      <p>While the final product (Electricity) is always the same, the journey to get there depends on the source. Some paths are long and complex (like Coal), while others are direct and elegant (like Solar).</p>
       
-      <div class="example-box">
-        <strong>Real World Example:</strong> Think of Coal as a "Battery" created by nature over millions of years. We are simply unlocking that stored chemical energy. Sunlight, on the other hand, is a continuous stream of energy that we must catch in real-time.
-      </div>
-
-      <h3>Why We Care (IPP Context)</h3>
-      <p>We are in the business of converting Primary Energy (free fuel like Sun/Wind or purchased fuel like Coal) into Secondary Energy (Electricity) with maximum efficiency. Every Joule lost in conversion is revenue lost.</p>
-      <p><em>Next: Energy comes in many forms. Let's see how they connect.</em></p>
+      <p><em>Click the icons below to see how different sources transform into power.</em></p>
     `,
     widgetType: 'energy-converter'
   },
   {
     id: 'types',
-    title: 'Types of Energy',
+    title: 'Common Energy Conversions',
     content: `
       <h2>Forms & Transformations</h2>
-      <p>Energy shapeshifts. To generate power, we often have to force energy through multiple forms:</p>
+      <p>As you saw above, we often force energy through multiple forms to get what we want:</p>
       <ul>
-        <li><strong>Chemical:</strong> Stored in the bonds of coal or gas.</li>
-        <li><strong>Thermal:</strong> Released as heat when we burn the fuel.</li>
-        <li><strong>Kinetic:</strong> The movement of steam expanding to spin a turbine.</li>
-        <li><strong>Electrical:</strong> The final output from the generator.</li>
+        <li><strong>Chemical:</strong> Stored in bonds (Coal, Biomass).</li>
+        <li><strong>Thermal:</strong> Released as heat (Fire).</li>
+        <li><strong>Kinetic:</strong> Movement (Wind, Steam Turbine).</li>
+        <li><strong>Gravitational:</strong> Height (Water in a dam).</li>
+        <li><strong>Radiant:</strong> Light (Sunlight).</li>
       </ul>
       
       <div class="example-box">
-        <strong>Real World Example:</strong> A car engine works similarly. Chemical (Petrol) -> Thermal (Explosion) -> Kinetic (Piston moving) -> Kinetic (Wheels turning).
+        <strong>Note:</strong> Solar PV is unique because it skips the "Mechanical" step entirely, converting light directly to electrons. This is why it has no moving parts!
       </div>
 
       <h3>Why We Care</h3>
@@ -106,7 +102,7 @@ export const topics = [
       <p>We don't just sell to a customer; we inject into this shared pool. If the pool is full (congestion) or the pipes are too small (transmission constraints), we can't sell our power, even if we can generate it.</p>
       <p><em>Next: What is pouring into this pool right now?</em></p>
     `,
-    widgetType: 'grid-purpose'
+    widgetType: 'transmission-bottleneck'
   },
   {
     id: 'mix',
@@ -126,6 +122,11 @@ export const topics = [
 
       <h3>Why We Care</h3>
       <p>We are shifting from a Coal-heavy portfolio to a Green portfolio. This changes how we operate. We are moving from "Controllable" generation to "Variable" generation.</p>
+      
+      <p>India is on the verge of a historic milestone. As of mid-2025, our <strong>Non-Fossil</strong> installed capacity (Solar, Wind, Hydro, Nuclear) has reached nearly <strong>49%</strong>, almost overtaking Fossil fuels.</p>
+      <p>Explore the interactive grid below. Each dot represents ~1% of India's power capacity.</p>
+      
+      <p style="font-size: 0.8rem; color: #888; margin-top: 10px;"><em>Source: <a href="https://powermin.gov.in/en/content/power-sector-glance-all-india" target="_blank" style="color: #888; text-decoration: underline;">Ministry of Power, Govt. of India (Power Sector at a Glance)</a>.</em></p>
       <p><em>Next: Why the shift? The environmental cost.</em></p>
     `,
     widgetType: 'grid-mix'
@@ -184,7 +185,7 @@ export const topics = [
       <p>If we fail to provide power when promised, the frequency drops, risking a blackout. The grid operator will penalize us heavily for this.</p>
       <p><em>Next: What happens when the sun sets?</em></p>
     `,
-    widgetType: 'frequency-scale'
+    widgetType: 'grid-purpose'
   },
   {
     id: 'challenges',
@@ -225,15 +226,18 @@ export const topics = [
     id: 'dsm',
     title: 'DSM & Penalties',
     content: `
-      <h2>Deviation Settlement Mechanism</h2>
-      <p>To enforce discipline, the regulator imposes fines. If we deviate from our schedule beyond a limit (e.g., 15%), we pay a penalty called DSM.</p>
+      <h2>Forecast Accuracy = Profitability</h2>
+      <p>In the renewable energy sector, the Deviation Settlement Mechanism (DSM) is not just a regulatory fine; it is a critical operational cost. If our actual generation deviates from our forecasted schedule, we pay a heavy price.</p>
+      <p><strong>The Business Risk:</strong> Forecast errors directly erode our revenue. Under the latest CERC regulations, we must maintain our generation within a tight band of the available capacity (AVC). Deviating outside this band triggers penalties that can turn a profitable day into a loss.</p>
       
       <div class="example-box">
-        <strong>Real World Example:</strong> It's like a delivery service. If you promise to deliver at 10 AM and arrive at 12 PM, you pay a late fee. In the grid, this fee is calculated every 15 minutes.
+        <strong>Financial Impact Simulator:</strong> Use the tool below to stress-test your portfolio. See how weather uncertainty (Forecast Error) eats into your profit margins.
       </div>
 
+      <img src="./meteorologist.png" alt="Meteorologist monitoring renewable energy generation" style="width: 100%; border-radius: 8px; margin: 20px 0; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+
       <h3>Why We Care</h3>
-      <p>Profit = Revenue - Cost - Penalties. In a low-margin business, minimizing DSM penalties is often the difference between profit and loss.</p>
+      <p>Minimizing DSM penalties is the difference between a successful IPP and a struggling one. This is why we invest millions in advanced weather modelling and AI-based forecasting systems.</p>
       <p><em>Next: How do we solve the variability permanently?</em></p>
     `,
     widgetType: 'penalty-simulator'
@@ -250,6 +254,19 @@ export const topics = [
         <strong>Real World Example:</strong> Batteries turn "Perishable" electricity (must be used now) into "Non-perishable" electricity (can be used later).
       </div>
 
+      <img src="./bess_hydrogen.png" alt="Battery Energy Storage System and Green Hydrogen Plant" style="width: 100%; border-radius: 8px; margin: 20px 0; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+
+      <h3>Use Cases: BESS vs Green Hydrogen</h3>
+      <p>While both store energy, they serve different purposes:</p>
+      <ul style="list-style: none; padding: 0;">
+        <li style="background: rgba(76, 175, 80, 0.1); padding: 10px; border-radius: 6px; margin-bottom: 10px;">
+          <strong>🔋 BESS (Batteries):</strong> Best for <em>Short Duration</em> (4-6 hours). Used for daily day-night balancing and grid stability (Frequency Response).
+        </li>
+        <li style="background: rgba(3, 169, 244, 0.1); padding: 10px; border-radius: 6px;">
+          <strong>💧 Green Hydrogen:</strong> Best for <em>Long Duration</em> (Seasonal storage) and <em>Hard-to-Abate Sectors</em>. It replaces fossil fuels in industries like Steel, Fertilizer, and Shipping.
+        </li>
+      </ul>
+
       <h3>Why We Care</h3>
       <p>This turns intermittent renewable power into firm, round-the-clock power. It allows us to compete directly with coal.</p>
       <p><em>Next: A regulatory nuance.</em></p>
@@ -260,16 +277,36 @@ export const topics = [
     id: 'clean-vs-renewable',
     title: 'Clean vs Renewable',
     content: `
-      <h2>Definitions Matter</h2>
-      <p><strong>Renewable:</strong> Source is replenished naturally (Sun, Wind, Biomass).</p>
-      <p><strong>Clean:</strong> Low carbon emissions (Nuclear, Large Hydro).</p>
-      <p>Large Hydro (>25MW) was historically not "Renewable" in India, but is "Clean."</p>
+      <h2>The Critical Distinction</h2>
+      <p>These terms are often used interchangeably, but they mean different things in the energy industry. Understanding the difference is key to understanding policy and carbon markets.</p>
       
-      <h3>Why We Care</h3>
-      <p>Only "Renewable" projects generate RECs (Renewable Energy Certificates). Understanding the classification helps in regulatory compliance and trading.</p>
-      <p><em>Next: How do we monetize these certificates?</em></p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+        <div style="background: rgba(76, 175, 80, 0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #4CAF50;">
+          <h3 style="margin-top:0; color: #2E7D32;">Renewable Energy</h3>
+          <p style="font-size: 0.9rem; margin-bottom: 0;"><strong>Definition:</strong> Energy from a source that is not depleted when used.</p>
+          <ul style="font-size: 0.85rem; padding-left: 20px; margin-bottom: 0;">
+            <li>☀️ Solar (Sunlight is infinite)</li>
+            <li>🌬️ Wind (Wind is infinite)</li>
+            <li>🌊 Hydro (Water cycle replenishes)</li>
+          </ul>
+        </div>
+        <div style="background: rgba(3, 169, 244, 0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #03A9F4;">
+          <h3 style="margin-top:0; color: #0277BD;">Clean Energy</h3>
+          <p style="font-size: 0.9rem; margin-bottom: 0;"><strong>Definition:</strong> Energy that creates little to no greenhouse gas emissions.</p>
+          <ul style="font-size: 0.85rem; padding-left: 20px; margin-bottom: 0;">
+            <li>⚛️ Nuclear (Zero Carbon, but finite fuel)</li>
+            <li>☀️ Solar / 🌬️ Wind (Zero Carbon)</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>The "Nuclear" Nuance</h3>
+      <p><strong>Nuclear Power</strong> is the best example of the difference. It is <strong>Clean</strong> (Zero Carbon) but <strong>NOT Renewable</strong> (Uranium is a finite resource mined from the earth). Therefore, Nuclear plants do NOT get RECs (Renewable Energy Certificates).</p>
+
+      <h3>Test Your Understanding</h3>
+      <p>Can you correctly classify these energy sources? Play the game below!</p>
     `,
-    widgetType: 'venn-diagram'
+    widgetType: 'energy-sorter'
   },
   {
     id: 'carbon-markets',
@@ -307,6 +344,7 @@ export const topics = [
       
       <h3>Why We Care</h3>
       <p>We build plants where the resource is best (Rajasthan), but we sell power to where the money is (Commercial states like Maharashtra). This requires Inter-State Transmission System (ISTS) access.</p>
+      <p style="font-size: 0.8rem; color: #888; margin-top: 10px;"><em>Source: <a href="https://mnre.gov.in/" target="_blank" style="color: #888; text-decoration: underline;">MNRE</a> & <a href="https://www.niti.gov.in/" target="_blank" style="color: #888; text-decoration: underline;">NITI Aayog Reports</a>.</em></p>
       <p><em>Next: Let's test your knowledge.</em></p>
     `,
     widgetType: 'state-explorer'
@@ -320,6 +358,40 @@ export const topics = [
       <p>Passing Score: 70% (14/20)</p>
     `,
     widgetType: 'quiz-module-v2'
+  },
+  {
+    id: 'authors',
+    title: 'Meet Authors',
+    content: `
+      <div class="authors-container">
+        <!-- Author 1 -->
+        <div class="author-card">
+          <img src="./avatar_male.png" alt="Dondeti Pranay Reddy" class="author-avatar">
+          <div class="author-name">Dondeti Pranay Reddy</div>
+          <div class="author-role">Energy Meteorologist at Adani Green Energy Limited</div>
+          <a href="https://www.linkedin.com/in/dondetipranayreddy/" target="_blank" class="linkedin-btn">
+            <span>Connect</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Author 2 -->
+        <div class="author-card">
+          <img src="./avatar_female.png" alt="Dristhi Verma" class="author-avatar">
+          <div class="author-name">Dristhi Verma</div>
+          <div class="author-role">BSc(Hons) Computer Science, Delhi University</div>
+          <a href="https://www.linkedin.com/in/drishti-verma-791b0b330/" target="_blank" class="linkedin-btn">
+            <span>Connect</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    `,
+    widgetType: null
   }
 ];
 

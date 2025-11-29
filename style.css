@@ -121,6 +121,13 @@ body {
   box-shadow: 0 2px 8px rgba(0, 176, 255, 0.15);
 }
 
+.nav-number {
+  min-width: 25px;
+  display: inline-block;
+  text-align: right;
+  font-weight: bold;
+}
+
 /* Main Content */
 #main-content {
   padding: 40px;
@@ -351,4 +358,76 @@ p {
     /* Prevent wrapping if needed, though might break text */
     /* Actually, white-space: nowrap might be bad for text descriptions inside widgets. Let's omit it. */
   }
+}
+
+/* Authors Page Styles */
+.authors-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.author-card {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  padding: 30px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  backdrop-filter: blur(4px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.author-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 176, 255, 0.2);
+  border-color: var(--neon-cyan);
+}
+
+.author-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--neon-cyan);
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.author-name {
+  font-size: 1.4rem;
+  color: var(--text-main);
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.author-role {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  font-family: var(--font-mono);
+  min-height: 40px;
+  /* Align buttons */
+}
+
+.linkedin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #0077b5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: background 0.3s ease;
+}
+
+.linkedin-btn:hover {
+  background: #005582;
+  box-shadow: 0 4px 12px rgba(0, 119, 181, 0.3);
 }

@@ -1,8 +1,271 @@
 export function render(container) {
-  container.innerHTML = `
-    <div style="text-align: center;">
-      <img src="./intro-image.png" alt="City Life Powered by Electricity" style="max-width: 100%; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-      <p style="margin-top: 15px; font-style: italic; color: #666;">Electricity powers our modern existence.</p>
+  const style = document.createElement('style');
+  style.textContent = `
+    .city-container {
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364); /* Night Sky */
+      border-radius: 12px;
+      padding: 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      height: 350px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      font-family: 'Inter', sans-serif;
+      box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+      transition: background 2s ease;
+    }
+    .city-container.day {
+      background: linear-gradient(to bottom, #2980b9, #6dd5fa, #ffffff); /* Day Sky */
+    }
+
+    /* Moon/Sun */
+    .celestial-body {
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #fdfbf7;
+      box-shadow: 0 0 20px #fdfbf7;
+      transition: all 2s ease;
+    }
+    .city-container.day .celestial-body {
+      background: #FDB813;
+      box-shadow: 0 0 40px #FDB813;
+      top: 30px;
+      right: 60px;
+    }
+
+    /* Skyline */
+    .skyline {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      width: 100%;
+      height: 60%;
+      position: relative;
+      z-index: 2;
+    }
+    .building {
+      background: #1a1a1a;
+      margin: 0 2px;
+      position: relative;
+      transition: background 0.5s;
+    }
+    .b1 { width: 40px; height: 120px; }
+    .b2 { width: 60px; height: 180px; }
+    .b3 { width: 50px; height: 150px; }
+    .b4 { width: 70px; height: 220px; }
+    .b5 { width: 45px; height: 100px; }
+    
+    /* Windows */
+    .window {
+      width: 6px;
+      height: 8px;
+      background: #333;
+      margin: 4px;
+      display: inline-block;
+      border-radius: 1px;
+      transition: background 0.5s, box-shadow 0.5s;
+    }
+    .window.lit {
+      background: #FFD700;
+      box-shadow: 0 0 5px #FFD700;
+    }
+
+    /* Streetlights */
+    .street {
+      width: 100%;
+      height: 40px;
+      background: #111;
+      position: relative;
+      z-index: 3;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      padding-bottom: 10px;
+    }
+    .lamp-post {
+      width: 4px;
+      height: 60px;
+      background: #222;
+      position: relative;
+    }
+    .lamp-head {
+      width: 12px;
+      height: 8px;
+      background: #444;
+      position: absolute;
+      top: 0;
+      left: -4px;
+      border-radius: 4px 4px 0 0;
+    }
+    .lamp-light {
+      width: 30px;
+      height: 30px;
+      background: radial-gradient(circle, rgba(255,215,0,0.6) 0%, rgba(255,215,0,0) 70%);
+      position: absolute;
+      top: 5px;
+      left: -13px;
+      opacity: 0;
+      transition: opacity 1s;
+    }
+    .lamp-light.on {
+      opacity: 1;
+    }
+
+    /* Controls */
+    .controls {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+      background: rgba(255,255,255,0.1);
+      padding: 10px;
+      border-radius: 30px;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .switch-label {
+      color: white;
+      font-size: 0.8rem;
+      margin-right: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+      vertical-align: middle;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    .status-text {
+      position: absolute;
+      bottom: 60px;
+      width: 100%;
+      text-align: center;
+      color: rgba(255,255,255,0.8);
+      font-size: 1.1rem;
+      font-weight: 300;
+      z-index: 5;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+  `;
+  container.appendChild(style);
+
+  const content = document.createElement('div');
+  content.className = 'city-container';
+  content.innerHTML = `
+    <div class="celestial-body"></div>
+    
+    <div class="controls">
+      <span class="switch-label">Power Grid</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="power-switch">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="status-text" id="status-text">The city is asleep. Flip the switch to power life.</div>
+
+    <div class="skyline">
+      <!-- Buildings generated by JS -->
+    </div>
+
+    <div class="street">
+      <div class="lamp-post"><div class="lamp-head"></div><div class="lamp-light"></div></div>
+      <div class="lamp-post"><div class="lamp-head"></div><div class="lamp-light"></div></div>
+      <div class="lamp-post"><div class="lamp-head"></div><div class="lamp-light"></div></div>
+      <div class="lamp-post"><div class="lamp-head"></div><div class="lamp-light"></div></div>
     </div>
   `;
+  container.appendChild(content);
+
+  const skyline = content.querySelector('.skyline');
+  const switchInput = content.querySelector('#power-switch');
+  const statusText = content.querySelector('#status-text');
+  const lights = content.querySelectorAll('.lamp-light');
+
+  // Generate Buildings
+  const buildingTypes = ['b1', 'b2', 'b3', 'b4', 'b5', 'b2', 'b1', 'b3'];
+  buildingTypes.forEach(type => {
+    const b = document.createElement('div');
+    b.className = `building ${type}`;
+
+    // Add windows
+    const windowCount = Math.floor(Math.random() * 8) + 4;
+    for (let i = 0; i < windowCount; i++) {
+      const w = document.createElement('span');
+      w.className = 'window';
+      b.appendChild(w);
+    }
+    skyline.appendChild(b);
+  });
+
+  const windows = content.querySelectorAll('.window');
+
+  switchInput.addEventListener('change', (e) => {
+    if (e.target.checked) {
+      // Power ON
+      statusText.textContent = "Electricity: The invisible pulse of modern life.";
+
+      // Streetlights first
+      lights.forEach((l, i) => {
+        setTimeout(() => l.classList.add('on'), i * 200);
+      });
+
+      // Then windows randomly
+      windows.forEach(w => {
+        if (Math.random() > 0.3) { // 70% of windows light up
+          setTimeout(() => w.classList.add('lit'), 800 + Math.random() * 1000);
+        }
+      });
+
+    } else {
+      // Power OFF
+      statusText.textContent = "Without energy, everything stops.";
+      lights.forEach(l => l.classList.remove('on'));
+      windows.forEach(w => w.classList.remove('lit'));
+    }
+  });
 }

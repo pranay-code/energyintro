@@ -1,8 +1,15 @@
 import Chart from 'chart.js/auto';
 
 export function render(container) {
+    // Create a wrapper for the chart to control height/width
+    const chartWrapper = document.createElement('div');
+    chartWrapper.style.position = 'relative';
+    chartWrapper.style.width = '100%';
+    chartWrapper.style.height = '300px'; // Fixed height for visibility
+    container.appendChild(chartWrapper);
+
     const canvas = document.createElement('canvas');
-    container.appendChild(canvas);
+    chartWrapper.appendChild(canvas);
 
     new Chart(canvas, {
         type: 'line',
@@ -28,6 +35,7 @@ export function render(container) {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false, // Important for responsive height
             plugins: {
                 title: {
                     display: true,

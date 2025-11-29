@@ -19,6 +19,16 @@ export function render(container) {
       gap: 20px;
       width: 100%;
     }
+    
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr; /* Stack on mobile */
+      }
+      .map-box {
+        height: 250px; /* Adjust height for mobile */
+      }
+    }
+
     .map-box {
       height: 300px;
       border-radius: 12px;

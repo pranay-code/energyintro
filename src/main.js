@@ -14,16 +14,19 @@ import * as EmissionCalculator from './components/widgets/emission-calculator.js
 import * as LcoeTrend from './components/widgets/lcoe-trend.js';
 import * as FrequencyScale from './components/widgets/frequency-scale.js';
 import * as DuckCurve from './components/widgets/duck-curve.js';
-import * as WeatherDashboard from './components/widgets/weather-dashboard-v2.js';
+import * as WeatherDashboardV2 from './components/widgets/weather-dashboard-v2.js';
 import * as PenaltySimulator from './components/widgets/penalty-simulator.js';
 import * as BatteryArbitrage from './components/widgets/battery-arbitrage.js';
 import * as VennDiagram from './components/widgets/venn-diagram.js';
 import * as RecMarket from './components/widgets/rec-market.js';
 import * as StateExplorer from './components/widgets/state-explorer.js';
-import * as QuizModule from './components/widgets/quiz-module-v2.js';
+import * as QuizModuleV2 from './components/widgets/quiz-module-v2.js';
 import * as IntroWidget from './components/widgets/intro-widget.js';
+import * as TransmissionBottleneck from './components/widgets/transmission-bottleneck.js';
+import * as EnergySorter from './components/widgets/energy-sorter.js';
 
-const WIDGETS = {
+const widgetRegistry = {
+    'intro-widget': IntroWidget,
     'energy-converter': EnergyConverter,
     'types-matrix': TypesMatrix,
     'turbine-logic': TurbineLogic,
@@ -34,14 +37,15 @@ const WIDGETS = {
     'lcoe-trend': LcoeTrend,
     'frequency-scale': FrequencyScale,
     'duck-curve': DuckCurve,
-    'weather-dashboard-v2': WeatherDashboard,
+    'weather-dashboard-v2': WeatherDashboardV2,
     'penalty-simulator': PenaltySimulator,
     'battery-arbitrage': BatteryArbitrage,
     'venn-diagram': VennDiagram,
     'rec-market': RecMarket,
     'state-explorer': StateExplorer,
-    'quiz-module-v2': QuizModule,
-    'intro-widget': IntroWidget
+    'quiz-module-v2': QuizModuleV2,
+    'transmission-bottleneck': TransmissionBottleneck,
+    'energy-sorter': EnergySorter
 };
 
 // Dynamic Widget Loader
@@ -50,7 +54,7 @@ async function loadWidget(widgetType, container) {
         // Clear previous widget
         container.innerHTML = '';
 
-        const module = WIDGETS[widgetType];
+        const module = widgetRegistry[widgetType];
 
         if (module && module.render) {
             module.render(container);
@@ -68,15 +72,27 @@ function renderTopic(topicId) {
     const topic = topics.find(t => t.id === topicId);
     if (!topic) return;
 
+    // Extract "Next: ..." text
+    let content = topic.content;
+    let nextText = '';
+    const nextMatch = content.match(/<p><em>Next:.*?<\/em><\/p>/);
+
+    if (nextMatch) {
+        nextText = nextMatch[0];
+        content = content.replace(nextMatch[0], '');
+    }
+
     // Update Content
     mainContent.innerHTML = `
     <div class="content-card">
       <h1>${topic.title}</h1>
-      <div class="topic-content">${topic.content}</div>
+      <div class="topic-content">${content}</div>
+      ${topic.widgetType ? `
       <div id="widget-area-${topic.id}" class="widget-container">
         <div class="widget-title">INTERACTIVE MODULE</div>
         <!-- Widget renders here -->
-      </div>
+      </div>` : ''}
+      ${nextText ? `<div class="next-section">${nextText}</div>` : ''}
     </div>
   `;
 

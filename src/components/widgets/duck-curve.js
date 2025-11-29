@@ -15,8 +15,14 @@ export function render(container) {
   `;
     container.appendChild(style);
 
+    const chartWrapper = document.createElement('div');
+    chartWrapper.style.position = 'relative';
+    chartWrapper.style.width = '100%';
+    chartWrapper.style.height = '300px';
+    container.appendChild(chartWrapper);
+
     const canvas = document.createElement('canvas');
-    container.appendChild(canvas);
+    chartWrapper.appendChild(canvas);
 
     const controls = document.createElement('div');
     controls.className = 'controls';
@@ -64,6 +70,7 @@ export function render(container) {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,

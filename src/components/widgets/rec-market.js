@@ -3,99 +3,127 @@ export function render(container) {
   style.textContent = `
     .market-container {
       display: flex;
-      flex-direction: row; /* Explicitly set row */
-      justify-content: space-between;
+      flex-direction: column; /* Vertical Layout */
       align-items: center;
-      padding: 20px;
+      padding: 30px 20px;
       background: #fff;
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
       position: relative;
       overflow: hidden;
-      height: 220px; /* Increased height */
-      width: 100%; /* Ensure full width */
-      box-sizing: border-box; /* Include padding in width */
+      min-height: 400px;
+      width: 100%;
+      box-sizing: border-box;
+      gap: 20px;
     }
     .entity {
       display: flex;
       flex-direction: column;
       align-items: center;
       z-index: 2;
-      width: 120px; /* Fixed width for entities */
-      flex-shrink: 0; /* Prevent shrinking */
+      width: 100%;
+      flex-shrink: 0;
     }
     .entity-icon {
       font-size: 3rem;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
+      background: #f5f5f5;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #eee;
     }
     .entity-label {
       font-weight: bold;
       color: #333;
       text-align: center;
       font-size: 0.9rem;
-      line-height: 1.2;
     }
     .exchange-zone {
       flex-grow: 1;
-      height: 100%;
+      width: 100%;
       position: relative;
       display: flex;
-      align-items: center;
       justify-content: center;
-      margin: 0 10px; /* Add spacing */
+      min-height: 150px;
+    }
+    .path-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: #eee;
+      transform: translateX(-50%);
+      z-index: 1;
     }
     .token {
       position: absolute;
-      padding: 6px 12px;
-      border-radius: 20px; /* Pill shape */
-      font-size: 0.8rem;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
       font-weight: bold;
       display: flex;
       align-items: center;
-      gap: 5px;
-      transition: left 2.5s linear, right 2.5s linear, opacity 0.3s ease; /* Smoother transition */
+      gap: 8px;
+      transition: top 2.5s linear, bottom 2.5s linear, opacity 0.3s ease;
       opacity: 0;
       white-space: nowrap;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      z-index: 1;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      z-index: 3;
+      left: 50%;
+      transform: translateX(-50%);
     }
     .rec-token {
       background: #E8F5E9;
       color: #2E7D32;
       border: 1px solid #2E7D32;
-      top: 60px;
+      top: 10px; /* Start near top */
     }
     .money-token {
       background: #FFF3E0;
       color: #EF6C00;
       border: 1px solid #EF6C00;
-      bottom: 60px;
+      bottom: 10px; /* Start near bottom */
     }
     .market-label {
       position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%) rotate(90deg);
       font-size: 0.8rem;
-      color: #999;
-      letter-spacing: 1px;
+      color: #ccc;
+      letter-spacing: 2px;
+      font-weight: bold;
+      pointer-events: none;
+    }
+    @media (max-width: 480px) {
+      .market-label {
+        display: none;
+      }
     }
   `;
-  // container.appendChild(style); // Moved to bottom
 
   container.innerHTML = `
     <div class="market-container">
       <div class="market-label">POWER EXCHANGE</div>
       
+      <!-- Top Entity: Generator -->
       <div class="entity">
         <div class="entity-icon">☀️</div>
-        <div class="entity-label">Solar Generator</div>
+        <div class="entity-label">Renewable Generator</div>
       </div>
 
+      <!-- Middle: Exchange Zone -->
       <div class="exchange-zone" id="exchange-zone">
-        <!-- Tokens will animate here -->
+        <div class="path-line"></div>
+        <!-- Tokens animate here -->
       </div>
 
+      <!-- Bottom Entity: Buyer -->
       <div class="entity">
         <div class="entity-icon">🏭</div>
         <div class="entity-label">Polluting Factory</div>
@@ -111,26 +139,26 @@ export function render(container) {
     const zone = container.querySelector('#exchange-zone');
     if (!zone) return;
 
-    // REC moves Left -> Right
+    // REC moves Top -> Bottom
     const rec = document.createElement('div');
     rec.className = 'token rec-token';
     rec.innerHTML = '📄 1 REC';
-    rec.style.left = '10%';
+    rec.style.top = '0%';
     rec.style.opacity = '1';
     zone.appendChild(rec);
 
-    // Money moves Right -> Left
+    // Money moves Bottom -> Top
     const money = document.createElement('div');
     money.className = 'token money-token';
     money.innerHTML = '💰 ₹1000';
-    money.style.right = '10%';
+    money.style.bottom = '0%';
     money.style.opacity = '1';
     zone.appendChild(money);
 
     // Trigger animation
     requestAnimationFrame(() => {
-      rec.style.left = '70%';
-      money.style.right = '70%';
+      rec.style.top = '80%';
+      money.style.bottom = '80%';
     });
 
     // Cleanup

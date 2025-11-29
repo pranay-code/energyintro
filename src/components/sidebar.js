@@ -7,7 +7,7 @@ export function initSidebar(topics, onSelect) {
         if (index === 0) div.classList.add('active');
 
         div.innerHTML = `
-      <span class="nav-number">${index + 1}</span>
+      <span class="nav-number">${index + 1}.</span>
       <span class="nav-text">${topic.title.split(':')[0]}</span>
     `; // Simplified title for sidebar
 
