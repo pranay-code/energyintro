@@ -192,7 +192,7 @@ export function render(container) {
     async function updateForecast(lat, lon, days) {
       try {
         // Fetch GHI and Wind Speed (120m)
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=shortwave_radiation,wind_speed_120m&forecast_days=${days}`;
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=shortwave_radiation,wind_speed_120m&forecast_days=${days}&timezone=auto`;
         const res = await fetch(url);
         const data = await res.json();
 
