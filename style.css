@@ -295,7 +295,7 @@ p {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   body {
     overflow: auto;
     height: auto;
@@ -354,9 +354,6 @@ p {
     /* Allow horizontal scrolling */
     text-align: center;
     /* Center content if it fits */
-    white-space: nowrap;
-    /* Prevent wrapping if needed, though might break text */
-    /* Actually, white-space: nowrap might be bad for text descriptions inside widgets. Let's omit it. */
   }
 }
 

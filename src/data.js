@@ -380,7 +380,7 @@ export const topics = [
 
         <!-- Author 2 -->
         <div class="author-card">
-          <img src="./avatar_female.png" alt="Dristhi Verma" class="author-avatar">
+          <img src="./avatar_female_v3.png" alt="Dristhi Verma" class="author-avatar">
           <div class="author-name">Dristhi Verma</div>
           <div class="author-role">BSc(Hons) Computer Science, Delhi University</div>
           <a href="https://www.linkedin.com/in/drishti-verma-791b0b330/" target="_blank" class="linkedin-btn">

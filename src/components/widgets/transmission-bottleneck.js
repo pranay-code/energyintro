@@ -1,6 +1,6 @@
 export function render(container) {
-    const style = document.createElement('style');
-    style.textContent = `
+  const style = document.createElement('style');
+  style.textContent = `
     .bottleneck-container {
       width: 100%;
       background: #263238;
@@ -129,11 +129,25 @@ export function render(container) {
     }
     .status-message.error { color: #FF1744; }
     .status-message.success { color: #00E676; }
-  `;
-    container.appendChild(style);
 
-    const content = document.createElement('div');
-    content.innerHTML = `
+    @media (max-width: 480px) {
+      .controls-area {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .visual-area {
+        height: 120px;
+        padding: 0 10px;
+      }
+      .icon {
+        font-size: 2rem;
+      }
+    }
+  `;
+  container.appendChild(style);
+
+  const content = document.createElement('div');
+  content.innerHTML = `
     <div class="bottleneck-container">
       <div class="visual-area">
         <div class="node">
@@ -165,129 +179,129 @@ export function render(container) {
         <div class="control-group">
           <div class="label">Grid Capacity</div>
           <div style="display:flex; gap:10px;">
-            <button class="toggle-btn" data-type="cap" data-val="thin">Thin</button>
-            <button class="toggle-btn active" data-type="cap" data-val="thick">Thick</button>
+            <button class="toggle-btn" data-type="cap" data-val="low">Low</button>
+            <button class="toggle-btn active" data-type="cap" data-val="high">High</button>
           </div>
         </div>
       </div>
     </div>
   `;
-    container.appendChild(content);
+  container.appendChild(content);
 
-    // State
-    let state = {
-        gen: 'high',
-        cap: 'thick'
-    };
+  // State
+  let state = {
+    gen: 'high',
+    cap: 'high'
+  };
 
-    const wires = content.querySelector('#wires');
-    const cityIcon = content.querySelector('#city-icon');
-    const statusMsg = content.querySelector('#status-msg');
-    const wiresContainer = content.querySelector('.wires-container');
+  const wires = content.querySelector('#wires');
+  const cityIcon = content.querySelector('#city-icon');
+  const statusMsg = content.querySelector('#status-msg');
+  const wiresContainer = content.querySelector('.wires-container');
 
-    // Animation Loop
-    let electrons = [];
+  // Animation Loop
+  let electrons = [];
 
-    function spawnElectron() {
-        const el = document.createElement('div');
-        el.className = 'electron';
-        el.style.left = '0%';
-        wiresContainer.appendChild(el);
+  function spawnElectron() {
+    const el = document.createElement('div');
+    el.className = 'electron';
+    el.style.left = '0%';
+    wiresContainer.appendChild(el);
 
-        // Speed depends on congestion
-        // If Congested (High Gen + Thin Wires), move very slow or stop
-        let speed = 1;
-        if (state.gen === 'high' && state.cap === 'thin') speed = 0.1; // Congested
-        else if (state.gen === 'low') speed = 0.5; // Low Gen
-        else speed = 1.5; // Optimal
+    // Speed depends on congestion
+    // If Congested (High Gen + Low Cap), move very slow or stop
+    let speed = 1;
+    if (state.gen === 'high' && state.cap === 'low') speed = 0.1; // Congested
+    else if (state.gen === 'low') speed = 0.5; // Low Gen
+    else speed = 1.5; // Optimal
 
-        electrons.push({ el, pos: 0, speed });
+    electrons.push({ el, pos: 0, speed });
+  }
+
+  // Start loop
+  setInterval(() => {
+    // Spawn rate
+    if (state.gen === 'high' && Math.random() > 0.8) spawnElectron();
+    if (state.gen === 'low' && Math.random() > 0.95) spawnElectron();
+  }, 100);
+
+  function animate() {
+    // Update electrons
+    for (let i = electrons.length - 1; i >= 0; i--) {
+      const e = electrons[i];
+
+      // Dynamic speed update based on current state
+      if (state.gen === 'high' && state.cap === 'low') e.speed = 0.1;
+      else if (state.gen === 'low') e.speed = 0.5;
+      else e.speed = 1.5;
+
+      e.pos += e.speed;
+      e.el.style.left = e.pos + '%';
+
+      if (e.pos > 100) {
+        e.el.remove();
+        electrons.splice(i, 1);
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  function updateVisuals() {
+    // Wires Thickness
+    if (state.cap === 'high') {
+      wires.classList.remove('thin');
+      wires.classList.add('thick');
+    } else {
+      wires.classList.remove('thick');
+      wires.classList.add('thin');
     }
 
-    // Start loop
-    setInterval(() => {
-        // Spawn rate
-        if (state.gen === 'high' && Math.random() > 0.8) spawnElectron();
-        if (state.gen === 'low' && Math.random() > 0.95) spawnElectron();
-    }, 100);
+    // Congestion Logic
+    if (state.gen === 'high' && state.cap === 'low') {
+      // Congestion
+      wires.classList.remove('normal');
+      wires.classList.add('congested');
+      statusMsg.textContent = "CONGESTION DETECTED: Power Curtailed";
+      statusMsg.className = "status-message error";
+      cityIcon.style.opacity = '0.5'; // Dim city
+      cityIcon.style.filter = 'grayscale(100%)';
+    } else {
+      // Normal
+      wires.classList.remove('congested');
+      wires.classList.add('normal');
 
-    function animate() {
-        // Update electrons
-        for (let i = electrons.length - 1; i >= 0; i--) {
-            const e = electrons[i];
-
-            // Dynamic speed update based on current state
-            if (state.gen === 'high' && state.cap === 'thin') e.speed = 0.1;
-            else if (state.gen === 'low') e.speed = 0.5;
-            else e.speed = 1.5;
-
-            e.pos += e.speed;
-            e.el.style.left = e.pos + '%';
-
-            if (e.pos > 100) {
-                e.el.remove();
-                electrons.splice(i, 1);
-            }
-        }
-        requestAnimationFrame(animate);
+      if (state.gen === 'high') {
+        statusMsg.textContent = "Optimal Flow: City Powered";
+        statusMsg.className = "status-message success";
+        cityIcon.style.opacity = '1';
+        cityIcon.style.filter = 'drop-shadow(0 0 15px #FFD740)'; // Glow
+      } else {
+        statusMsg.textContent = "Low Generation";
+        statusMsg.className = "status-message";
+        cityIcon.style.opacity = '0.7';
+        cityIcon.style.filter = 'none';
+      }
     }
-    animate();
+  }
 
-    function updateVisuals() {
-        // Wires Thickness
-        if (state.cap === 'thick') {
-            wires.classList.remove('thin');
-            wires.classList.add('thick');
-        } else {
-            wires.classList.remove('thick');
-            wires.classList.add('thin');
-        }
+  // Event Listeners
+  content.querySelectorAll('.toggle-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const type = e.target.dataset.type;
+      const val = e.target.dataset.val;
 
-        // Congestion Logic
-        if (state.gen === 'high' && state.cap === 'thin') {
-            // Congestion
-            wires.classList.remove('normal');
-            wires.classList.add('congested');
-            statusMsg.textContent = "CONGESTION DETECTED: Power Curtailed";
-            statusMsg.className = "status-message error";
-            cityIcon.style.opacity = '0.5'; // Dim city
-            cityIcon.style.filter = 'grayscale(100%)';
-        } else {
-            // Normal
-            wires.classList.remove('congested');
-            wires.classList.add('normal');
+      // Update State
+      state[type] = val;
 
-            if (state.gen === 'high') {
-                statusMsg.textContent = "Optimal Flow: City Powered";
-                statusMsg.className = "status-message success";
-                cityIcon.style.opacity = '1';
-                cityIcon.style.filter = 'drop-shadow(0 0 15px #FFD740)'; // Glow
-            } else {
-                statusMsg.textContent = "Low Generation";
-                statusMsg.className = "status-message";
-                cityIcon.style.opacity = '0.7';
-                cityIcon.style.filter = 'none';
-            }
-        }
-    }
+      // Update Buttons UI
+      content.querySelectorAll(`.toggle-btn[data-type="${type}"]`).forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
 
-    // Event Listeners
-    content.querySelectorAll('.toggle-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const type = e.target.dataset.type;
-            const val = e.target.dataset.val;
-
-            // Update State
-            state[type] = val;
-
-            // Update Buttons UI
-            content.querySelectorAll(`.toggle-btn[data-type="${type}"]`).forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-
-            updateVisuals();
-        });
+      updateVisuals();
     });
+  });
 
-    // Init
-    updateVisuals();
+  // Init
+  updateVisuals();
 }

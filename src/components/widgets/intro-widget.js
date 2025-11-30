@@ -55,6 +55,8 @@ export function render(container) {
       margin: 0 2px;
       position: relative;
       transition: background 0.5s;
+      flex-shrink: 1;
+      min-width: 10px;
     }
     .b1 { width: 40px; height: 120px; }
     .b2 { width: 60px; height: 180px; }
