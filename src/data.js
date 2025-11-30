@@ -355,7 +355,7 @@ export const topics = [
     title: 'Final Assessment',
     content: `
       <h2>Prove Your Knowledge</h2>
-      <p>Take the 20-question assessment to earn your <strong>Energy Domain Associate</strong> certificate.</p>
+      <p>Take the 20-question assessment to earn your <strong>Acknowledgement certificate for mastery in fundamentals of energy domain (An IPP's perspective)</strong>.</p>
       <p>Passing Score: 70% (14/20)</p>
     `,
     widgetType: 'quiz-module-v2'

@@ -182,7 +182,7 @@ export function render(container) {
     doc.setTextColor(0, 176, 255);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(40);
-    doc.text('CERTIFICATE OF ACHIEVEMENT', 148.5, 50, { align: 'center' });
+    doc.text('ACKNOWLEDGEMENT CERTIFICATE', 148.5, 50, { align: 'center' });
 
     // Subtitle
     doc.setTextColor(50, 50, 50);
