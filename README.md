@@ -1,6 +1,6 @@
 # The Energy Odyssey: Introduction to Energy and Forecasting industry
 
-**The Energy Odyssey** is an interactive web application designed to help new hires and enthusiasts get comfortable with the complex world of the Energy Grid. It takes users on a journey from the fundamental physics of energy to the place where you are comfortable with energy domain.
+**The Energy Odyssey** is an interactive web application designed to help new hires and enthusiasts get comfortable with the complex world of the Energy Grid. It takes users on a journey from the fundamental physics of energy to the place where you are comfortable with energy domain/ forecasting.
 
 🔗 **Live Demo:** [https://pranay-code.github.io/energyintro/](https://pranay-code.github.io/energyintro/)
 
