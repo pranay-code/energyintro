@@ -367,7 +367,7 @@ export const topics = [
       <div class="authors-container">
         <!-- Author 1 -->
         <div class="author-card">
-          <img src="./avatar_male_v2.png" alt="Dondeti Pranay Reddy" class="author-avatar">
+          <img src="./avatar_male_v3.png" alt="Dondeti Pranay Reddy" class="author-avatar">
           <div class="author-name">Dondeti Pranay Reddy</div>
           <div class="author-role">Energy Meteorologist at Adani Green Energy Limited</div>
           <a href="https://www.linkedin.com/in/dondetipranayreddy/" target="_blank" class="linkedin-btn">
