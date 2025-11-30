@@ -1,6 +1,6 @@
-# The Energy Odyssey: Energy Domain Onboarding Portal
+# The Energy Odyssey: Introduction to Energy and Forecasting industry
 
-**The Energy Odyssey** is an interactive web application designed to help new hires and enthusiasts get comfortable with the complex world of the Energy Grid. It takes users on a journey from the fundamental physics of energy to the economics of modern power markets.
+**The Energy Odyssey** is an interactive web application designed to help new hires and enthusiasts get comfortable with the complex world of the Energy Grid. It takes users on a journey from the fundamental physics of energy to the place where you are comfortable with energy domain.
 
 🔗 **Live Demo:** [https://pranay-code.github.io/energyintro/](https://pranay-code.github.io/energyintro/)
 
