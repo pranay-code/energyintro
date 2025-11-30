@@ -73,6 +73,16 @@ export function render(container) {
         height: 300px;
       }
     }
+
+    @media (max-width: 480px) {
+      .input-row {
+        flex-wrap: wrap;
+      }
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
   `;
     container.appendChild(style);
 

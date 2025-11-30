@@ -1,6 +1,6 @@
 export function render(container) {
-    const style = document.createElement('style');
-    style.textContent = `
+  const style = document.createElement('style');
+  style.textContent = `
     .mix-container {
       background: #fff;
       border-radius: 12px;
@@ -81,23 +81,33 @@ export function render(container) {
     .hydro { background-color: #00BCD4; } /* Cyan */
     .nuclear { background-color: #9C27B0; } /* Purple */
     .bio { background-color: #8D6E63; } /* Brown */
+
+    @media (max-width: 480px) {
+      .dot {
+        width: 15px;
+        height: 15px;
+      }
+      .waffle-grid {
+        gap: 4px;
+      }
+    }
   `;
-    container.appendChild(style);
+  container.appendChild(style);
 
-    // Data (June 2025 Estimates - Total ~476 GW)
-    // Percentages approximated to fit 100 dots
-    const data = [
-        { id: 'coal', label: 'Thermal (Coal/Gas)', percent: 51, capacity: '240 GW', color: '#546E7A' },
-        { id: 'solar', label: 'Solar', percent: 22, capacity: '106 GW', color: '#FFC107' },
-        { id: 'wind', label: 'Wind', percent: 11, capacity: '50 GW', color: '#03A9F4' },
-        { id: 'hydro', label: 'Large Hydro', percent: 10, capacity: '48 GW', color: '#00BCD4' },
-        { id: 'bio', label: 'Biomass/Small Hydro', percent: 4, capacity: '23 GW', color: '#8D6E63' },
-        { id: 'nuclear', label: 'Nuclear', percent: 2, capacity: '9 GW', color: '#9C27B0' }
-    ];
+  // Data (June 2025 Estimates - Total ~476 GW)
+  // Percentages approximated to fit 100 dots
+  const data = [
+    { id: 'coal', label: 'Thermal (Coal/Gas)', percent: 51, capacity: '240 GW', color: '#546E7A' },
+    { id: 'solar', label: 'Solar', percent: 22, capacity: '106 GW', color: '#FFC107' },
+    { id: 'wind', label: 'Wind', percent: 11, capacity: '50 GW', color: '#03A9F4' },
+    { id: 'hydro', label: 'Large Hydro', percent: 10, capacity: '48 GW', color: '#00BCD4' },
+    { id: 'bio', label: 'Biomass/Small Hydro', percent: 4, capacity: '23 GW', color: '#8D6E63' },
+    { id: 'nuclear', label: 'Nuclear', percent: 2, capacity: '9 GW', color: '#9C27B0' }
+  ];
 
-    const content = document.createElement('div');
-    content.className = 'mix-container';
-    content.innerHTML = `
+  const content = document.createElement('div');
+  content.className = 'mix-container';
+  content.innerHTML = `
     <div class="stats-overlay" id="stats-display">
       <div class="stat-value">476 GW</div>
       <div class="stat-label">Total Installed Capacity</div>
@@ -105,83 +115,83 @@ export function render(container) {
     <div class="waffle-grid" id="grid"></div>
     <div class="legend" id="legend"></div>
   `;
-    container.appendChild(content);
+  container.appendChild(content);
 
-    const grid = content.querySelector('#grid');
-    const legend = content.querySelector('#legend');
-    const statsDisplay = content.querySelector('#stats-display');
+  const grid = content.querySelector('#grid');
+  const legend = content.querySelector('#legend');
+  const statsDisplay = content.querySelector('#stats-display');
 
-    // Generate Dots
-    let dotIndex = 0;
-    data.forEach(source => {
-        for (let i = 0; i < source.percent; i++) {
-            const dot = document.createElement('div');
-            dot.className = `dot ${source.id}`;
-            dot.dataset.source = source.id;
-            dot.style.animation = `fadeIn 0.3s ease forwards ${dotIndex * 0.01}s`;
-            dot.style.opacity = '0'; // Start hidden for animation
+  // Generate Dots
+  let dotIndex = 0;
+  data.forEach(source => {
+    for (let i = 0; i < source.percent; i++) {
+      const dot = document.createElement('div');
+      dot.className = `dot ${source.id}`;
+      dot.dataset.source = source.id;
+      dot.style.animation = `fadeIn 0.3s ease forwards ${dotIndex * 0.01}s`;
+      dot.style.opacity = '0'; // Start hidden for animation
 
-            // Hover Event
-            dot.addEventListener('mouseenter', () => showStats(source));
-            dot.addEventListener('mouseleave', resetStats);
+      // Hover Event
+      dot.addEventListener('mouseenter', () => showStats(source));
+      dot.addEventListener('mouseleave', resetStats);
 
-            grid.appendChild(dot);
-            dotIndex++;
+      grid.appendChild(dot);
+      dotIndex++;
 
-            // Animate in
-            setTimeout(() => dot.style.opacity = '1', dotIndex * 10);
-        }
+      // Animate in
+      setTimeout(() => dot.style.opacity = '1', dotIndex * 10);
+    }
 
-        // Legend Item
-        const legendItem = document.createElement('div');
-        legendItem.className = 'legend-item';
-        legendItem.innerHTML = `
+    // Legend Item
+    const legendItem = document.createElement('div');
+    legendItem.className = 'legend-item';
+    legendItem.innerHTML = `
       <div class="legend-color ${source.id}"></div>
       <span>${source.label}</span>
     `;
-        legendItem.addEventListener('mouseenter', () => {
-            highlightSource(source.id);
-            showStats(source);
-        });
-        legendItem.addEventListener('mouseleave', () => {
-            resetHighlight();
-            resetStats();
-        });
-        legend.appendChild(legendItem);
+    legendItem.addEventListener('mouseenter', () => {
+      highlightSource(source.id);
+      showStats(source);
     });
+    legendItem.addEventListener('mouseleave', () => {
+      resetHighlight();
+      resetStats();
+    });
+    legend.appendChild(legendItem);
+  });
 
-    function showStats(source) {
-        statsDisplay.innerHTML = `
+  function showStats(source) {
+    statsDisplay.innerHTML = `
       <div class="stat-value" style="color: ${source.color}">${source.capacity}</div>
       <div class="stat-label">${source.label} (${source.percent}%)</div>
     `;
-    }
+  }
 
-    function resetStats() {
-        statsDisplay.innerHTML = `
+  function resetStats() {
+    statsDisplay.innerHTML = `
       <div class="stat-value">476 GW</div>
       <div class="stat-label">Total Installed Capacity</div>
     `;
-    }
+  }
 
-    function highlightSource(sourceId) {
-        const dots = grid.querySelectorAll('.dot');
-        dots.forEach(dot => {
-            if (dot.dataset.source !== sourceId) {
-                dot.style.opacity = '0.2';
-                dot.style.transform = 'scale(0.8)';
-            } else {
-                dot.style.opacity = '1';
-                dot.style.transform = 'scale(1.1)';
-            }
-        });
-    }
+  function highlightSource(sourceId) {
+    const dots = grid.querySelectorAll('.dot');
+    dots.forEach(dot => {
+      if (dot.dataset.source !== sourceId) {
+        dot.style.opacity = '0.2';
+        dot.style.transform = 'scale(0.8)';
+      } else {
+        dot.style.opacity = '1';
+        dot.style.transform = 'scale(1.1)';
+      }
+    });
+  }
 
-    function resetHighlight() {
-        const dots = grid.querySelectorAll('.dot');
-        dots.forEach(dot => {
-            dot.style.opacity = '1';
-            dot.style.transform = 'scale(1)';
-        });
-    }
+  function resetHighlight() {
+    const dots = grid.querySelectorAll('.dot');
+    dots.forEach(dot => {
+      dot.style.opacity = '1';
+      dot.style.transform = 'scale(1)';
+    });
+  }
 }
