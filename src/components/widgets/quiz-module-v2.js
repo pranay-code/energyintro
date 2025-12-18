@@ -180,18 +180,29 @@ export function render(container) {
 
     // Build Review HTML
     let reviewHtml = '<div class="review-list"><h3>Detailed Review</h3>';
-    userAnswers.forEach((ans, index) => {
-      const q = quizQuestions[index]; // Note: userAnswers tracks sequential answers to the shuffled set
-      if (!ans.isCorrect) {
-        reviewHtml += `
-          <div class="review-item wrong">
-            <p><strong>Q${index + 1}:</strong> ${q.q}</p>
-            <p>Your Answer: <span class="wrong-ans">${q.options[ans.selectedIdx]}</span></p>
-            <p>Correct Answer: <span class="correct-ans">${q.options[q.a]}</span></p>
-          </div>
-        `;
-      }
-    });
+
+    if (score === quizQuestions.length) {
+      reviewHtml += `
+        <div class="review-item" style="text-align:center; background:rgba(0, 200, 83, 0.1);">
+          <p style="color:var(--success-green); font-weight:bold; margin:0;">
+            🌟 Outstanding! You answered every question correctly.
+          </p>
+        </div>
+      `;
+    } else {
+      userAnswers.forEach((ans, index) => {
+        const q = quizQuestions[index]; // Note: userAnswers tracks sequential answers to the shuffled set
+        if (!ans.isCorrect) {
+          reviewHtml += `
+            <div class="review-item wrong">
+              <p><strong>Q${index + 1}:</strong> ${q.q}</p>
+              <p>Your Answer: <span class="wrong-ans">${q.options[ans.selectedIdx]}</span></p>
+              <p>Correct Answer: <span class="correct-ans">${q.options[q.a]}</span></p>
+            </div>
+          `;
+        }
+      });
+    }
     reviewHtml += '</div>';
 
     content.innerHTML = `
