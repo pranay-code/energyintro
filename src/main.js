@@ -69,16 +69,19 @@ async function loadWidget(widgetType, container) {
 }
 
 function renderTopic(topicId) {
-    const topic = topics.find(t => t.id === topicId);
+    const topicIndex = topics.findIndex(t => t.id === topicId);
+    const topic = topics[topicIndex];
     if (!topic) return;
 
-    // Extract "Next: ..." text
+    const nextTopic = topics[topicIndex + 1];
+
+    // Extract "Next: ..." text if it exists (usually at the end of content)
     let content = topic.content;
-    let nextText = '';
+    let nextHint = '';
     const nextMatch = content.match(/<p><em>(Next:|But what if).*?<\/em><\/p>/);
 
     if (nextMatch) {
-        nextText = nextMatch[0];
+        nextHint = nextMatch[0];
         content = content.replace(nextMatch[0], '');
     }
 
@@ -92,7 +95,15 @@ function renderTopic(topicId) {
         <div class="widget-title">INTERACTIVE MODULE</div>
         <!-- Widget renders here -->
       </div>` : ''}
-      ${nextText ? `<div class="next-section">${nextText}</div>` : ''}
+      
+      <div class="navigation-footer">
+        ${nextHint ? `<div class="next-hint">${nextHint}</div>` : ''}
+        ${nextTopic ? `
+          <button class="btn next-section-btn" data-next-id="${nextTopic.id}">
+            Go to: ${nextTopic.title} →
+          </button>
+        ` : '<p class="end-msg">You have reached the end of the journey! 🎉</p>'}
+      </div>
     </div>
   `;
 
@@ -101,24 +112,49 @@ function renderTopic(topicId) {
     if (topic.widgetType) {
         loadWidget(topic.widgetType, widgetContainer);
     }
+
+    // Add listener for next button
+    const nextBtn = mainContent.querySelector('.next-section-btn');
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            const nextId = nextBtn.dataset.nextId;
+            renderTopic(nextId);
+            // Also update active state in sidebar
+            document.querySelectorAll('.nav-item').forEach(nav => {
+                nav.classList.toggle('active', nav.dataset.id === nextId);
+            });
+            // Scroll to top
+            mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 }
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    initSidebar(topics, renderTopic);
+    initSidebar(topics, (id) => {
+        renderTopic(id);
+        // On mobile, close sidebar after selection
+        if (window.innerWidth <= 900) {
+            document.getElementById('sidebar').classList.remove('open');
+        }
+    });
 
     // Initial Render
-    // renderSidebar(); // Removed undefined call
     renderTopic(topics[0].id);
 
-    // Mobile Menu Toggle
+    // Sidebar Toggle Logic
     const menuToggle = document.getElementById('menu-toggle');
     const closeSidebarBtn = document.getElementById('close-sidebar');
     const sidebar = document.getElementById('sidebar');
+    const app = document.getElementById('app');
 
     if (menuToggle && sidebar) {
         menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
+            if (window.innerWidth > 900) {
+                app.classList.toggle('sidebar-collapsed');
+            } else {
+                sidebar.classList.toggle('open');
+            }
         });
 
         if (closeSidebarBtn) {
@@ -127,16 +163,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Close sidebar when clicking a nav item on mobile
-        sidebar.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768 && e.target.closest('.nav-item')) {
-                sidebar.classList.remove('open');
-            }
-        });
-
-        // Close sidebar when clicking outside (on main content)
+        // Close sidebar when clicking outside (on mobile only)
         document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768 &&
+            if (window.innerWidth <= 900 &&
                 sidebar.classList.contains('open') &&
                 !sidebar.contains(e.target) &&
                 e.target !== menuToggle) {

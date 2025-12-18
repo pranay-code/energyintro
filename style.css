@@ -70,25 +70,7 @@ body {
   }
 }
 
-/* Layout */
-#app {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  height: 100vh;
-}
-
-/* Sidebar */
-#sidebar {
-  background: rgba(255, 255, 255, 0.8);
-  border-right: var(--glass-border);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  backdrop-filter: blur(10px);
-  z-index: 10;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
-}
+/* Layout and Sidebar redefined at the bottom for interactivity */
 
 .logo {
   font-size: 1.5rem;
@@ -282,9 +264,9 @@ p {
   background: rgba(0, 0, 0, 0.3);
 }
 
-/* Mobile Responsiveness */
+/* Sidebar toggle button (Visible Always) */
 #menu-toggle {
-  display: none;
+  display: block;
   position: fixed;
   top: 15px;
   left: 15px;
@@ -297,6 +279,90 @@ p {
   font-size: 1.5rem;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+#menu-toggle:hover {
+  background: #01579B;
+  transform: scale(1.05);
+}
+
+/* Layout with Collapsible Sidebar */
+#app {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: 100vh;
+  transition: grid-template-columns 0.3s ease;
+}
+
+#app.sidebar-collapsed {
+  grid-template-columns: 0px 1fr;
+}
+
+#app.sidebar-collapsed #sidebar {
+  transform: translateX(-280px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Sidebar Styling Update */
+#sidebar {
+  background: rgba(255, 255, 255, 0.8);
+  border-right: var(--glass-border);
+  padding: 80px 20px 20px 20px;
+  /* Space for toggle button */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  backdrop-filter: blur(10px);
+  z-index: 90;
+  /* Below toggle but above content if needed */
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Navigation Footer & Next Button */
+.navigation-footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.next-hint {
+  font-style: italic;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.next-section-btn {
+  background: var(--neon-cyan);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 176, 255, 0.3);
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 400px;
+}
+
+.next-section-btn:hover {
+  background: #01579B;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 176, 255, 0.4);
+}
+
+.end-msg {
+  color: var(--success-green);
+  font-weight: bold;
+  font-style: italic;
 }
 
 @media (max-width: 900px) {
