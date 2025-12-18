@@ -97,7 +97,10 @@ export function render(container) {
     const q = questions[currentQ];
     content.innerHTML = `
       <div class="question-box">
-        <div style="margin-bottom:10px; color:#666">Question ${currentQ + 1}/${questions.length}</div>
+        <div style="margin-bottom:5px; font-size: 0.8rem; text-transform:uppercase; letter-spacing:1px; color:var(--neon-cyan); font-weight:bold;">
+          Topic: ${q.topic || 'General'}
+        </div>
+        <div style="margin-bottom:10px; color:#666; font-size:0.9rem;">Question ${currentQ + 1}/${questions.length}</div>
         <h3>${q.q}</h3>
         <div class="options-grid">
           ${q.options.map((opt, i) => `<button class="option-btn" data-idx="${i}">${opt}</button>`).join('')}

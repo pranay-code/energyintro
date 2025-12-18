@@ -397,24 +397,71 @@ export const topics = [
 ];
 
 export const questions = [
-  { q: "What is the primary difference between Primary and Secondary energy?", options: ["Primary is renewable, Secondary is fossil", "Primary is raw resource, Secondary is a carrier", "Primary is expensive, Secondary is cheap", "No difference"], a: 1 },
-  { q: "Which energy transformation occurs in a thermal power plant?", options: ["Chemical -> Thermal -> Kinetic -> Electrical", "Potential -> Kinetic -> Electrical", "Thermal -> Chemical -> Electrical", "Kinetic -> Thermal -> Electrical"], a: 0 },
-  { q: "What is the Carnot Limit related to?", options: ["Solar Efficiency", "Wind Speed Limits", "Thermal Plant Efficiency", "Battery Capacity"], a: 2 },
-  { q: "How does Solar PV generate electricity?", options: ["Induction", "Photo-electric Effect", "Combustion", "Fission"], a: 1 },
-  { q: "What is 'Base Load' power?", options: ["Power used only at peak times", "Power sources that run 24/7 (e.g., Coal)", "Renewable energy only", "Battery storage"], a: 1 },
-  { q: "Which emission is NOT typically associated with thermal plants?", options: ["CO2", "SOx", "Nuclear Waste", "PM2.5"], a: 2 },
-  { q: "What does LCOE stand for?", options: ["Low Cost of Energy", "Levelized Cost of Energy", "Long-term Coal of Energy", "Levelized Carbon of Energy"], a: 1 },
-  { q: "What happens to Grid Frequency if Demand > Supply?", options: ["It increases", "It stays same", "It drops", "It fluctuates wildly"], a: 2 },
-  { q: "What is the 'Duck Curve'?", options: ["A bird migration pattern", "Net load curve with high solar penetration", "Wind generation curve", "Coal price trend"], a: 1 },
-  { q: "Why is GHI important for forecasting?", options: ["It predicts wind speed", "It measures solar irradiance", "It predicts rain", "It measures coal quality"], a: 1 },
-  { q: "What is DSM in the context of the grid?", options: ["Demand Side Management", "Deviation Settlement Mechanism", "Direct Solar Measurement", "Daily Supply Monitor"], a: 1 },
-  { q: "What is the main purpose of BESS?", options: ["To generate power", "To store energy for time-shifting", "To cool solar panels", "To burn coal efficiently"], a: 1 },
-  { q: "Which of these is 'Clean' but not necessarily 'Renewable'?", options: ["Solar", "Wind", "Nuclear", "Biomass"], a: 2 },
-  { q: "Which Indian state is known as a Solar Hub?", options: ["Kerala", "Rajasthan", "West Bengal", "Bihar"], a: 1 },
-  { q: "If Scheduled Gen is 100MW and Actual is 80MW, what is the deviation?", options: ["-20%", "20%", "-10%", "0%"], a: 0 },
-  { q: "What is the standard Grid Frequency in India?", options: ["60Hz", "50Hz", "100Hz", "220Hz"], a: 1 },
-  { q: "What is 'Must-Run' status?", options: ["Plants that must run at full capacity", "Grid must absorb generated power (Renewables)", "Plants that are broken", "Diesel generators"], a: 1 },
-  { q: "Scope 2 emissions are:", options: ["Direct emissions", "Indirect from purchased electricity", "Supply chain emissions", "Employee commute"], a: 1 },
-  { q: "What converts Kinetic energy to Electrical energy?", options: ["Boiler", "Turbine", "Generator", "Condenser"], a: 2 },
-  { q: "Green Hydrogen is produced using:", options: ["Steam Methane Reforming", "Electrolysis with Renewable Energy", "Coal Gasification", "Nuclear Fission"], a: 1 }
+  // Intro
+  { topic: "Introduction", q: "What is the primary role of electricity in modern civilization?", options: ["It is a luxury commodity", "It is the invisible lifeblood providing energy", "It is only used for industry", "It is a finite resource that will end soon"], a: 1 },
+  { topic: "Introduction", q: "Which of the following concepts is NOT typically associated with the 'chaos' of the energy world?", options: ["Grid Frequency", "Forecasting", "Photosynthesis", "Renewables"], a: 2 },
+
+  // Energy Basics
+  { topic: "Energy: The Basics", q: "What is the difference between Primary and Secondary Energy?", options: ["No difference", "Primary is raw (Coal/Sun), Secondary is processed (Electricity)", "Primary is electricity, Secondary is coal", "Primary is expensive, Secondary is cheap"], a: 1 },
+  { topic: "Energy: The Basics", q: "Energy is defined as the capacity to do what?", options: ["Sleep", "Work", "Ignore Physics", "Creating Matter"], a: 1 },
+
+  // Conversions
+  { topic: "Energy Conversions", q: "Which form of energy is stored in a lump of Coal?", options: ["Kinetic", "Thermal", "Chemical", "Radiant"], a: 2 },
+  { topic: "Energy Conversions", q: "Solar PV technology is unique because it skips which conversion step?", options: ["Chemical", "Mechanical (Kinetic)", "Radiant", "Electrical"], a: 1 },
+
+  // Generation
+  { topic: "Generation Mechanics", q: "Most traditional power plants (Coal, Wind, Hydro) generate electricity using which principle?", options: ["Photo-electric Effect", "Electromagnetic Induction", "Nuclear Fission", "Chemical Reaction"], a: 1 },
+  { topic: "Generation Mechanics", q: "Which component is essential for Solar PV generation?", options: ["Turbine", "Gearbox", "Semiconductor (Silicon)", "Boiler"], a: 2 },
+
+  // Electricity
+  { topic: "Electricity & Efficiency", q: "Why is electricity the preferred energy carrier?", options: ["It is weightless and transmits instantly", "It is easy to smell", "It is 100% efficient to generate", "It can be stored in buckets"], a: 0 },
+  { topic: "Electricity & Efficiency", q: "What dictates the maximum efficiency of a thermal power plant?", options: ["Moore's Law", "The Carnot Limit", "Newton's First Law", "The Solar Constant"], a: 1 },
+
+  // Grid Purpose
+  { topic: "What is the Grid?", q: "The Grid connects Generators (Supply) to whom?", options: ["Other Generators", "The Ocean", "Consumers (Demand)", "Satellites"], a: 2 },
+  { topic: "What is the Grid?", q: "If the Grid is a pool, what represents the water level that must stay constant?", options: ["Voltage", "Current", "Frequency", "Resistance"], a: 2 },
+
+  // Mix
+  { topic: "Current Energy Mix", q: "Which type of power plant runs 24/7 to meet the minimum constant demand?", options: ["Peaking Power", "Base Load", "Variable Renewable", "Battery Storage"], a: 1 },
+  { topic: "Current Energy Mix", q: "Renewable energy sources like Solar and Wind are classified as:", options: ["Dispatchable", "Must-Run", "Base Load", "Emergency Backup"], a: 1 },
+
+  // Impact
+  { topic: "Environmental Impact", q: "Which gas is primarily responsible for Acid Rain?", options: ["CO2", "Oxygen", "SOx (Sulfur Oxides)", "Hydrogen"], a: 2 },
+  { topic: "Environmental Impact", q: "Why are ESG funds refusing to finance new coal projects?", options: ["Coal is too cheap", "Regulatory and Climate Risk", "Coal plants are too small", "They prefer nuclear"], a: 1 },
+
+  // Renewables
+  { topic: "Need for Renewables", q: "How has the LCOE (cost) of Solar changed over the last decade?", options: ["Increased by 50%", "Stayed the same", "Dropped by ~90%", "Doubled"], a: 2 },
+  { topic: "Need for Renewables", q: "What is the primary operational challenge of Solar and Wind?", options: ["High fuel cost", "Variability (Intermittency)", "High emissions", "Too much noise"], a: 1 },
+
+  // Grid Balance
+  { topic: "Grid Balance", q: "What happens to the Grid Frequency if Demand is greater than Supply?", options: ["It increases", "It stays constant", "It drops", "It becomes zero instantly"], a: 2 },
+  { topic: "Grid Balance", q: "What is the standard operating frequency of the Indian Grid?", options: ["60Hz", "100Hz", "50Hz", "120Hz"], a: 2 },
+
+  // Challenges
+  { topic: "Integration Challenges", q: "The 'Duck Curve' refers to the shape of what?", options: ["Solar generation only", "Net Demand (Load minus Solar)", "Wind generation profile", "Coal consumption"], a: 1 },
+  { topic: "Integration Challenges", q: "What is 'Curtailment'?", options: ["Buying more power", "Switching off generation to maintain grid benefits", "Increasing demand artificially", "Exporting power"], a: 1 },
+
+  // Forecasting
+  { topic: "Forecasting", q: "Why is accurate weather forecasting critical for renewable IPPs?", options: ["To know when to carry an umbrella", "Resource variability directly impacts generation stability", "To clean the panels", "It is not critical"], a: 1 },
+  { topic: "Forecasting", q: "What does GHI stand for in solar forecasting?", options: ["General Heat Index", "Global Horizontal Irradiance", "Grid Health Indicator", "Green House Impact"], a: 1 },
+
+  // DSM
+  { topic: "DSM & Penalties", q: "What does DSM stand for in the context of Indian regulations?", options: ["Digital Solar Meter", "Deviation Settlement Mechanism", "Daily Supply Monitor", "Direct Service Method"], a: 1 },
+  { topic: "DSM & Penalties", q: "What triggers a DSM penalty?", options: ["Generating exactly what you scheduled", "Deviating from your scheduled generation beyond limit", "Selling power too cheap", "Using solar panels"], a: 1 },
+
+  // Future
+  { topic: "Future Technologies", q: "Battery Energy Storage Systems (BESS) are best suited for:", options: ["Seasonal Storage", "Short Duration (4-6h) balancing", "Base Load generation", "Replacing transmission lines"], a: 1 },
+  { topic: "Future Technologies", q: "Green Hydrogen is produced by splitting water using:", options: ["Coal heat", "Renewable Electricity (Electrolysis)", "Natural Gas", "Nuclear decay"], a: 1 },
+
+  // Clean vs Renewable
+  { topic: "Clean vs Renewable", q: "Why is Nuclear energy considered 'Clean' but not 'Renewable'?", options: ["It emits carbon", "Its fuel (Uranium) is finite", "It is not safe", "It is renewable"], a: 1 },
+  { topic: "Clean vs Renewable", q: "Which of the following is BOTH Clean and Renewable?", options: ["Natural Gas", "Wind", "Nuclear", "Clean Coal"], a: 1 },
+
+  // Carbon Markets
+  { topic: "Carbon Markets", q: "What represents the 'Green Attribute' of renewable power?", options: ["The Voltage", "The REC (Renewable Energy Certificate)", "The Electron color", "The Invoice"], a: 1 },
+  { topic: "Carbon Markets", q: "Who typically buys RECs?", options: ["Solar Generators", "Obligated Entities (Polluting industries) to offset emissions", "Households", "Grid Operators"], a: 1 },
+
+  // Statistics
+  { topic: "Indian Statistics", q: "Which Indian state is often called the 'Saudi Arabia of Renewables' due to high solar/wind?", options: ["Kerala", "Rajasthan", "Punjab", "Odisha"], a: 1 },
+  { topic: "Indian Statistics", q: "Why do we need a robust Inter-State Transmission System (ISTS)?", options: ["To confuse the grid", "Resources are unevenly distributed across states", "To increase losses", "Electricity cannot travel far"], a: 1 }
 ];
