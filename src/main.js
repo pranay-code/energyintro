@@ -146,10 +146,11 @@ function renderTopic(topicId) {
 document.addEventListener('DOMContentLoaded', () => {
     initSidebar(topics, (id) => {
         renderTopic(id);
-        // On mobile, close sidebar after selection
-        if (window.innerWidth <= 900) {
-            document.getElementById('sidebar').classList.remove('open');
-        }
+        // Clean up mobile states regardless of current width (handles rotation)
+        const sidebar = document.getElementById('sidebar');
+        const app = document.getElementById('app');
+        if (sidebar) sidebar.classList.remove('open');
+        if (app) app.classList.remove('mobile-sidebar-open');
     });
 
     // Initial Render
