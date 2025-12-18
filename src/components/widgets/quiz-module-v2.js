@@ -295,34 +295,22 @@ export function render(container) {
   }
 
   function triggerCelebration() {
-    const balloons = ['🎈', '🎉', '🎊', '✨', '⚡', '🔋', '💡'];
+    const balloons = ['🎈', '🎈', '🎈', '🎈', '🎉', '🎊', '✨'];
     const container = document.body;
 
-    // Phase 1: Balloons / Emojis
-    for (let i = 0; i < 25; i++) {
+    // Create 40 floating balloons to cover the screen
+    for (let i = 0; i < 40; i++) {
       setTimeout(() => {
         const b = document.createElement('div');
         b.className = 'celebration-balloon';
         b.innerText = balloons[Math.floor(Math.random() * balloons.length)];
         b.style.left = Math.random() * 100 + 'vw';
-        b.style.fontSize = (Math.random() * 2 + 1) + 'rem';
-        b.style.animationDelay = (Math.random() * 0.5) + 's';
+        b.style.fontSize = (Math.random() * 2.5 + 1.5) + 'rem';
+        b.style.animationDuration = (Math.random() * 2 + 3) + 's'; // 3-5 seconds
+        b.style.zIndex = '9999'; // Ensure it's on top of everything
         container.appendChild(b);
-        setTimeout(() => b.remove(), 4000);
-      }, i * 150);
-    }
-
-    // Phase 2: Electric Sparks
-    for (let i = 0; i < 40; i++) {
-      setTimeout(() => {
-        const s = document.createElement('div');
-        s.className = 'celebration-spark';
-        s.style.left = Math.random() * 100 + 'vw';
-        s.style.top = '-20px';
-        s.style.animationDelay = (Math.random() * 2) + 's';
-        container.appendChild(s);
-        setTimeout(() => s.remove(), 2000);
-      }, i * 80);
+        setTimeout(() => b.remove(), 5000);
+      }, i * 100);
     }
   }
 

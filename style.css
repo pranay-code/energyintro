@@ -464,50 +464,25 @@ p {
 /* Celebration Animations */
 .celebration-balloon {
   position: fixed;
-  bottom: -50px;
+  bottom: -100px;
   font-size: 2.5rem;
-  z-index: 1000;
+  z-index: 9999;
   pointer-events: none;
-  animation: float-up-sway 4s ease-in forwards;
+  animation: float-up-sway 5s ease-in forwards;
 }
 
 @keyframes float-up-sway {
   0% {
-    transform: translateY(0) translateX(0);
+    transform: translateY(0) translateX(0) rotate(0deg);
     opacity: 1;
   }
 
   50% {
-    transform: translateY(-50vh) translateX(30px);
+    transform: translateY(-50vh) translateX(50px) rotate(20deg);
   }
 
   100% {
-    transform: translateY(-110vh) translateX(-20px);
-    opacity: 0;
-  }
-}
-
-.celebration-spark {
-  position: fixed;
-  width: 4px;
-  height: 15px;
-  background: #FFEE58;
-  /* Electric Yellow */
-  box-shadow: 0 0 10px #FFEE58;
-  z-index: 1001;
-  pointer-events: none;
-  border-radius: 2px;
-  animation: spark-fall 1.5s linear forwards;
-}
-
-@keyframes spark-fall {
-  0% {
-    transform: translateY(-10vh) rotate(0deg);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translateY(110vh) rotate(360deg);
+    transform: translateY(-120vh) translateX(-30px) rotate(-20deg);
     opacity: 0;
   }
 }
