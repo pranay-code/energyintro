@@ -167,12 +167,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 app.classList.toggle('sidebar-collapsed');
             } else {
                 sidebar.classList.toggle('open');
+                app.classList.toggle('mobile-sidebar-open');
             }
         });
 
         if (closeSidebarBtn) {
             closeSidebarBtn.addEventListener('click', () => {
-                sidebar.classList.remove('open');
+                if (window.innerWidth > 900) {
+                    app.classList.add('sidebar-collapsed');
+                } else {
+                    sidebar.classList.remove('open');
+                    app.classList.remove('mobile-sidebar-open');
+                }
             });
         }
 
@@ -183,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 !sidebar.contains(e.target) &&
                 e.target !== menuToggle) {
                 sidebar.classList.remove('open');
+                app.classList.remove('mobile-sidebar-open');
             }
         });
     }

@@ -287,6 +287,43 @@ p {
   transform: scale(1.05);
 }
 
+/* Logic to hide hamburger when sidebar is open */
+#app.mobile-sidebar-open #menu-toggle,
+#app:not(.sidebar-collapsed) #menu-toggle {
+  display: none !important;
+}
+
+/* X Button (Visible when sidebar is open) */
+#close-sidebar {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: white;
+  border: 1px solid var(--neon-cyan);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--neon-cyan);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  z-index: 210;
+  transition: all 0.2s ease;
+}
+
+#close-sidebar:hover {
+  background: var(--neon-cyan);
+  color: white;
+}
+
+#close-sidebar:active {
+  transform: scale(0.9);
+}
+
 /* Layout with Collapsible Sidebar */
 #app {
   display: grid;
@@ -309,16 +346,19 @@ p {
 #sidebar {
   background: rgba(255, 255, 255, 0.8);
   border-right: var(--glass-border);
-  padding: 80px 20px 20px 20px;
-  /* Space for toggle button */
+  padding: 20px;
+  /* Reduced since X button is absolute */
+  padding-top: 60px;
+  /* Space for X button */
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   backdrop-filter: blur(10px);
-  z-index: 90;
-  /* Below toggle but above content if needed */
+  z-index: 200;
+  /* Higher to cover layout */
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, opacity 0.3s ease;
+  position: relative;
 }
 
 /* Navigation Footer & Buttons */
@@ -525,49 +565,11 @@ p {
 
   .logo {
     padding-right: 40px;
-    /* Prevent text overlap with close button */
     font-size: 1.2rem;
-    /* Reduce size slightly on mobile */
-  }
-
-  #close-sidebar {
-    display: flex;
-    /* Flex to center content */
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid var(--neon-cyan);
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    font-size: 1.2rem;
-    line-height: 1;
-    /* Fix vertical alignment */
-    padding-bottom: 2px;
-    /* Slight adjustment for visual centering of x */
-    color: var(--neon-cyan);
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
-  }
-
-  #close-sidebar:active {
-    transform: scale(0.9);
-    background: var(--neon-cyan);
-    color: white;
-  }
-
-  #sidebar.open {
-    left: 0;
-    /* Slide in */
   }
 
   #main-content {
     padding: 80px 20px 20px 20px;
-    /* Top padding for menu button */
     width: 100%;
     height: auto;
     overflow: visible;
