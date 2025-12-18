@@ -167,10 +167,9 @@ h2 {
 }
 
 h3 {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: var(--solar-orange);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-weight: 700;
   margin-top: 1.5rem;
 }
 
