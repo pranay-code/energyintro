@@ -74,6 +74,7 @@ function renderTopic(topicId) {
     if (!topic) return;
 
     const nextTopic = topics[topicIndex + 1];
+    const prevTopic = topics[topicIndex - 1];
 
     // Extract "Next: ..." text if it exists (usually at the end of content)
     let content = topic.content;
@@ -98,11 +99,19 @@ function renderTopic(topicId) {
       
       <div class="navigation-footer">
         ${nextHint ? `<div class="next-hint">${nextHint}</div>` : ''}
-        ${nextTopic ? `
-          <button class="btn next-section-btn" data-next-id="${nextTopic.id}">
-            Go to: ${nextTopic.title} →
-          </button>
-        ` : '<p class="end-msg">You have reached the end of the journey! 🎉</p>'}
+        <div class="footer-buttons">
+          ${prevTopic ? `
+            <button class="btn prev-section-btn" data-prev-id="${prevTopic.id}">
+              ← Back: ${prevTopic.title}
+            </button>
+          ` : '<span></span>'}
+          
+          ${nextTopic ? `
+            <button class="btn next-section-btn" data-next-id="${nextTopic.id}">
+              Go to: ${nextTopic.title} →
+            </button>
+          ` : '<p class="end-msg">You have reached the end of the journey! 🎉</p>'}
+        </div>
       </div>
     </div>
   `;
@@ -113,20 +122,22 @@ function renderTopic(topicId) {
         loadWidget(topic.widgetType, widgetContainer);
     }
 
-    // Add listener for next button
+    // Add listeners for navigation buttons
     const nextBtn = mainContent.querySelector('.next-section-btn');
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            const nextId = nextBtn.dataset.nextId;
-            renderTopic(nextId);
-            // Also update active state in sidebar
-            document.querySelectorAll('.nav-item').forEach(nav => {
-                nav.classList.toggle('active', nav.dataset.id === nextId);
-            });
-            // Scroll to top
-            mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+    const prevBtn = mainContent.querySelector('.prev-section-btn');
+
+    const handleNav = (targetId) => {
+        renderTopic(targetId);
+        // Also update active state in sidebar
+        document.querySelectorAll('.nav-item').forEach(nav => {
+            nav.classList.toggle('active', nav.dataset.id === targetId);
         });
-    }
+        // Scroll to top
+        mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    if (nextBtn) nextBtn.addEventListener('click', () => handleNav(nextBtn.dataset.nextId));
+    if (prevBtn) prevBtn.addEventListener('click', () => handleNav(prevBtn.dataset.prevId));
 }
 
 // Initialize
