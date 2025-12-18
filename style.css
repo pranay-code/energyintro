@@ -330,16 +330,33 @@ p {
   }
 
   #close-sidebar {
-    display: block;
-    /* Visible on mobile */
+    display: flex;
+    /* Flex to center content */
+    align-items: center;
+    justify-content: center;
     position: absolute;
     top: 15px;
     right: 15px;
-    background: transparent;
-    border: none;
-    font-size: 2rem;
-    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--neon-cyan);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 1.5rem;
+    line-height: 1;
+    /* Fix vertical alignment */
+    padding-bottom: 2px;
+    /* Slight adjustment for visual centering of x */
+    color: var(--neon-cyan);
     cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+  }
+
+  #close-sidebar:active {
+    transform: scale(0.9);
+    background: var(--neon-cyan);
+    color: white;
   }
 
   #sidebar.open {
