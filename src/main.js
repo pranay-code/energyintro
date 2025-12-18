@@ -99,6 +99,8 @@ function renderTopic(topicId) {
       
       <div class="navigation-footer">
         ${nextHint ? `<div class="next-hint">${nextHint}</div>` : ''}
+        ${!nextTopic ? '<p class="end-msg">You have reached the end of the journey! 🎉</p>' : ''}
+        
         <div class="footer-buttons">
           ${prevTopic ? `
             <button class="btn prev-section-btn" data-prev-id="${prevTopic.id}">
@@ -110,7 +112,7 @@ function renderTopic(topicId) {
             <button class="btn next-section-btn" data-next-id="${nextTopic.id}">
               Go to: ${nextTopic.title} →
             </button>
-          ` : '<p class="end-msg">You have reached the end of the journey! 🎉</p>'}
+          ` : ''}
         </div>
       </div>
     </div>

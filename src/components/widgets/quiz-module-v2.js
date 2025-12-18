@@ -178,6 +178,10 @@ export function render(container) {
     const passed = percentage >= 70;
     const msg = passed ? 'Congratulations! You are a Domain Associate.' : 'Please review the material and try again.';
 
+    if (passed) {
+      setTimeout(triggerCelebration, 300); // Small delay for visual impact
+    }
+
     // Build Review HTML
     let reviewHtml = '<div class="review-list"><h3>Detailed Review</h3>';
 
@@ -288,6 +292,38 @@ export function render(container) {
     doc.text('Now fearlessly grow in the energy industry.', 148.5, 180, { align: 'center' });
 
     doc.save(`EnergyIntro_Certificate_${name.replace(/\s+/g, '_')}.pdf`);
+  }
+
+  function triggerCelebration() {
+    const balloons = ['🎈', '🎉', '🎊', '✨', '⚡', '🔋', '💡'];
+    const container = document.body;
+
+    // Phase 1: Balloons / Emojis
+    for (let i = 0; i < 25; i++) {
+      setTimeout(() => {
+        const b = document.createElement('div');
+        b.className = 'celebration-balloon';
+        b.innerText = balloons[Math.floor(Math.random() * balloons.length)];
+        b.style.left = Math.random() * 100 + 'vw';
+        b.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+        b.style.animationDelay = (Math.random() * 0.5) + 's';
+        container.appendChild(b);
+        setTimeout(() => b.remove(), 4000);
+      }, i * 150);
+    }
+
+    // Phase 2: Electric Sparks
+    for (let i = 0; i < 40; i++) {
+      setTimeout(() => {
+        const s = document.createElement('div');
+        s.className = 'celebration-spark';
+        s.style.left = Math.random() * 100 + 'vw';
+        s.style.top = '-20px';
+        s.style.animationDelay = (Math.random() * 2) + 's';
+        container.appendChild(s);
+        setTimeout(() => s.remove(), 2000);
+      }, i * 80);
+    }
   }
 
   container.appendChild(content);
