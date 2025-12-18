@@ -113,12 +113,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Mobile Menu Toggle
     const menuToggle = document.getElementById('menu-toggle');
+    const closeSidebarBtn = document.getElementById('close-sidebar');
     const sidebar = document.getElementById('sidebar');
 
     if (menuToggle && sidebar) {
         menuToggle.addEventListener('click', () => {
             sidebar.classList.toggle('open');
         });
+
+        if (closeSidebarBtn) {
+            closeSidebarBtn.addEventListener('click', () => {
+                sidebar.classList.remove('open');
+            });
+        }
 
         // Close sidebar when clicking a nav item on mobile
         sidebar.addEventListener('click', (e) => {
