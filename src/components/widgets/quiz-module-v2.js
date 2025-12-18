@@ -70,6 +70,57 @@ export function render(container) {
   `;
   container.appendChild(style);
 
+  container.appendChild(style);
+
+  // Smart Sampling Logic
+  function generateQuizSet() {
+    const questionsByTopic = {};
+    const fundamentalTopics = [
+      "Introduction",
+      "Energy: The Basics",
+      "Generation Mechanics",
+      "What is the Grid?",
+      "Current Energy Mix"
+    ];
+
+    // 1. Group by Topic
+    questions.forEach(q => {
+      const t = q.topic || 'General';
+      if (!questionsByTopic[t]) questionsByTopic[t] = [];
+      questionsByTopic[t].push(q);
+    });
+
+    const selectedSet = [];
+    const remainingPool = [];
+
+    // 2. Pick 1 from each topic (Ensure Coverage)
+    Object.keys(questionsByTopic).forEach(topic => {
+      const pool = questionsByTopic[topic];
+      const selectedIndex = Math.floor(Math.random() * pool.length);
+      selectedSet.push(pool[selectedIndex]);
+
+      // Add unselected ones to remaining pool if they are fundamental
+      pool.forEach((q, i) => {
+        if (i !== selectedIndex && fundamentalTopics.includes(topic)) {
+          remainingPool.push(q);
+        }
+      });
+    });
+
+    // 3. Pick remaining to reach 20 (Weighted towards fundamentals)
+    while (selectedSet.length < 20 && remainingPool.length > 0) {
+      const idx = Math.floor(Math.random() * remainingPool.length);
+      selectedSet.push(remainingPool[idx]);
+      remainingPool.splice(idx, 1);
+    }
+
+    // 4. Shuffle Final Set
+    return selectedSet.sort(() => Math.random() - 0.5);
+  }
+
+  // Initialize with sampled set
+  const quizQuestions = generateQuizSet();
+
   let currentQ = 0;
   let score = 0;
   let userAnswers = []; // Store { qIdx, selectedIdx, isCorrect }
@@ -81,7 +132,7 @@ export function render(container) {
     content.innerHTML = `
       <div class="question-box" style="text-align:center">
         <h2>Ready to Certify?</h2>
-        <p>20 Questions. No Time Limit. 70% to Pass.</p>
+        <p>20 Questions (Selected from a larger pool). No Time Limit. 70% to Pass.</p>
         <button class="btn" id="start-btn" style="margin-top:20px">Start Assessment</button>
       </div>
     `;
@@ -89,18 +140,18 @@ export function render(container) {
   }
 
   function showQuestion() {
-    if (currentQ >= questions.length) {
+    if (currentQ >= quizQuestions.length) {
       showResult();
       return;
     }
 
-    const q = questions[currentQ];
+    const q = quizQuestions[currentQ];
     content.innerHTML = `
       <div class="question-box">
         <div style="margin-bottom:5px; font-size: 0.8rem; text-transform:uppercase; letter-spacing:1px; color:var(--neon-cyan); font-weight:bold;">
           Topic: ${q.topic || 'General'}
         </div>
-        <div style="margin-bottom:10px; color:#666; font-size:0.9rem;">Question ${currentQ + 1}/${questions.length}</div>
+        <div style="margin-bottom:10px; color:#666; font-size:0.9rem;">Question ${currentQ + 1}/${quizQuestions.length}</div>
         <h3>${q.q}</h3>
         <div class="options-grid">
           ${q.options.map((opt, i) => `<button class="option-btn" data-idx="${i}">${opt}</button>`).join('')}
@@ -123,18 +174,18 @@ export function render(container) {
   }
 
   function showResult() {
-    const percentage = (score / questions.length) * 100;
+    const percentage = (score / quizQuestions.length) * 100;
     const passed = percentage >= 70;
     const msg = passed ? 'Congratulations! You are a Domain Associate.' : 'Please review the material and try again.';
 
     // Build Review HTML
     let reviewHtml = '<div class="review-list"><h3>Detailed Review</h3>';
-    userAnswers.forEach(ans => {
-      const q = questions[ans.qIdx];
+    userAnswers.forEach((ans, index) => {
+      const q = quizQuestions[index]; // Note: userAnswers tracks sequential answers to the shuffled set
       if (!ans.isCorrect) {
         reviewHtml += `
           <div class="review-item wrong">
-            <p><strong>Q${ans.qIdx + 1}:</strong> ${q.q}</p>
+            <p><strong>Q${index + 1}:</strong> ${q.q}</p>
             <p>Your Answer: <span class="wrong-ans">${q.options[ans.selectedIdx]}</span></p>
             <p>Correct Answer: <span class="correct-ans">${q.options[q.a]}</span></p>
           </div>
@@ -146,7 +197,7 @@ export function render(container) {
     content.innerHTML = `
       <div class="result-screen">
         <h2>Assessment Complete</h2>
-        <div class="score-display">${score}/${questions.length}</div>
+        <div class="score-display">${score}/${quizQuestions.length}</div>
         <p>${msg}</p>
         ${passed ? `<button class="btn" id="cert-btn" style="margin-top:20px">Download Certificate</button>` : `<button class="btn" id="retry-btn" style="margin-top:20px">Retry</button>`}
         ${reviewHtml}
@@ -157,6 +208,12 @@ export function render(container) {
       content.querySelector('#cert-btn').addEventListener('click', generateCertificate);
     } else {
       content.querySelector('#retry-btn').addEventListener('click', () => {
+        // Re-sample on retry for a fresh test? 
+        // Or keep same? User usually expects same or similar. 
+        // Let's re-sample to make it rigorous.
+        // But quizQuestions is const. We need to handle this.
+        // Ideally we reload the widget.
+        // For now, let's just reset stats and use the SAME questions to allow them to pass the specific test they were given.
         currentQ = 0;
         score = 0;
         userAnswers = [];
@@ -211,7 +268,7 @@ export function render(container) {
     doc.setFontSize(12);
     doc.setTextColor(100, 100, 100);
     const date = new Date().toLocaleDateString();
-    doc.text(`Score: ${score}/${questions.length} (${(score / questions.length) * 100}%)`, 148.5, 150, { align: 'center' });
+    doc.text(`Score: ${score}/${quizQuestions.length} (${(score / quizQuestions.length) * 100}%)`, 148.5, 150, { align: 'center' });
     doc.text(`Date: ${date}`, 148.5, 160, { align: 'center' });
 
     // Footer
