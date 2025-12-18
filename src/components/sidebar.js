@@ -4,6 +4,7 @@ export function initSidebar(topics, onSelect) {
     topics.forEach((topic, index) => {
         const div = document.createElement('div');
         div.className = 'nav-item';
+        div.dataset.id = topic.id; // Crucial for external navigation sync
         if (index === 0) div.classList.add('active');
 
         div.innerHTML = `
